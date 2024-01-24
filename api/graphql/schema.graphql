@@ -1,0 +1,153 @@
+"A date string with format `Y-m-d`, e.g. `2011-05-23`."
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+
+"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
+"A datetime and timezone string in ISO 8601 format `Y-m-dTH:i:sO`, e.g. `2020-04-20T13:53:12+02:00`."
+scalar DateTimeTz @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTimeTz")
+
+type Query {
+    users: [User!]! @paginate(defaultCount: 10)
+    user(id: ID @eq): User @find
+    posts: [Post!]! @all
+    post(id: Int! @eq): Post @find
+
+    hello: String!
+
+    computingResource(id: Int! @eq): ComputingResource @find
+    computingResources: [ComputingResource!]! @all
+
+    tasks: [Task!]!
+    taskById(id: ID!): Task
+    TaskJobsByTaskId(id: ID!): [TaskJobDetails]!
+
+    orchestratorServerAvailable: ResourceStatus
+}
+
+type Mutation {
+    createUser(name: String!, email: String!, password: String!): User! @create
+
+    updateUser(id: ID!, name: String): User @update
+    deleteUser(id: ID!): User @delete
+
+    createComputingResource(name: String!, port: String!, host: String!, login: String!, password: String!): ComputingResource
+    deleteComputingResource(id: ID!): ComputingResource @delete
+
+    createTask(name: String!, computing_resource_id: ID!, script: String, computational_model_resource: String, numerical_model: String, converter_service: String): Task
+    startTask(id: ID!): Task
+    deleteTask(id: ID!): Task
+    checkTask(id: ID!): Task
+    abortTask(id: ID!): Task
+
+
+}
+
+type TaskJobDetails {
+    id: ID!
+    json_data: String
+}
+
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+    posts: [Post!]! @hasMany
+}
+
+type ComputingResource {
+    id: ID!
+    name: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+    port: String
+    host: String
+    login: String
+    password: String
+    public_key: String
+    private_key: String
+    template_type: String
+}
+
+type Task {
+    id: String!
+    name: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+    status: String
+    files: String
+    script: String
+    jobs: [String]
+    computational_model_resource: String
+    computing_resource: ComputingResource! @belongsTo
+    type: String
+    extra: String
+    numerical_model: String
+    converter_service: String
+}
+
+type ResourceStatus {
+    status: ComputingResourceStatus
+}
+
+type ConverterService {
+    type: String
+}
+
+type Post {
+    id: ID!
+    title: String!
+    content: String!
+    author: User! @belongsTo
+    comments: [Comment!]! @hasMany
+}
+
+type Comment {
+    id: ID!
+    reply: String!
+    post: Post! @belongsTo
+}
+
+
+enum TaskStatus {
+    # Задача создана, но не отправлена на выполнение
+    DRAFT
+    # Задача в процессе подготовки к выполнению
+    CREATING
+    # Задача в очереди на выполнение
+    QUEUED
+    # Задача на выполнении
+    RUNNING
+    # Задача в процессе отмены
+    ABORTING
+    # Задача отменена
+    ABORTED
+    # Задача столкнулась с проблемой во время выполнения и не была успешно завершена
+    FAILED
+    # Задача успешно завершена
+    COMPLETED
+    # Статус задачи неизвестен
+    UNKNOWN
+    # Задача удалена
+    DELETED
+}
+
+enum ComputingResourceStatus {
+    # Ресурс создан, но не активирован
+    DRAFT
+    # Ресурс доступен
+    ONLINE
+    # Ресурс недоступен
+    OFFLINE
+    # Ошибка при подключении к ресурсу
+    FAILED
+    # Подключение к ресурсу
+    CONNECTING
+    # Статус ресурса неизвестен
+    UNKNOWN
+    # Ресурс удален
+    DELETED
+}

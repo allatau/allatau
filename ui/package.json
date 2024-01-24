@@ -1,0 +1,35 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@types/node": "^18",
+    "nuxt": "3.7.4"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.8.9",
+    "@pinia/nuxt": "^0.4.11",
+    "@types/papaparse": "^5.3.9",
+    "@vue/apollo-composable": "^4.0.0",
+    "ant-design-vue": "4",
+    "apexcharts": "^3.41.0",
+    "axios": "^1.4.0",
+    "gql-query-builder": "^3.8.0",
+    "graphql": "^16.8.1",
+    "inversify": "^6.0.1",
+    "nuxt-graphql-client": "^0.2.33",
+    "papaparse": "^5.4.1",
+    "reflect-metadata": "^0.1.13",
+    "sass": "^1.69.7",
+    "umi-request": "^1.4.0",
+    "vue-json-pretty": "^2.2.4",
+    "vue3-apexcharts": "^1.4.1"
+  }
+}
