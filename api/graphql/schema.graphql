@@ -32,7 +32,7 @@ type Mutation {
     deleteUser(id: ID!): User @delete
 
     createComputingResource(name: String!, port: String!, host: String!, login: String!, password: String!): ComputingResource
-    deleteComputingResource(id: ID!): ComputingResource @delete
+    deleteComputingResource(id: ID!): ComputingResource
 
     createTask(name: String!, computing_resource_id: ID!, script: String, computational_model_resource: String, numerical_model: String, converter_service: String): Task
     startTask(id: ID!): Task
