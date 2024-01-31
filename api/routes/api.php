@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Auth\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -23,5 +24,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/user/{id}', [UserController::class, 'show']);
 
-Route::get('/send', [SendController::class, 'sendText']);
-Route::get('/rabbitmq-receiver', [RabbitMQRecieveController::class, 'sendJob']);
+//Route::get('/send', [SendController::class, 'sendText']);
+//Route::get('/rabbitmq-receiver', [RabbitMQRecieveController::class, 'sendJob']);
+//Route::post('register', RegisterController::class);
+
+Route::post('login', [LoginController::class, 'login']);
+Route::get('logout', [LoginController::class, 'logout']);
+
+
+Route::group(['middleware' => 'api.auth'], function () {
+    Route::get('user', [LoginController::class, 'details']);
+
+//
+//    Route::apiResource('product', ProductController::class);
+//    Route::apiResource('category', CategoryController::class);
+});
