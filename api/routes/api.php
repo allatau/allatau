@@ -28,11 +28,13 @@ Route::get('/user/{id}', [UserController::class, 'show']);
 //Route::get('/rabbitmq-receiver', [RabbitMQRecieveController::class, 'sendJob']);
 //Route::post('register', RegisterController::class);
 
-Route::post('login', [LoginController::class, 'login']);
-Route::get('logout', [LoginController::class, 'logout']);
 
+
+Route::post('login', [LoginController::class, 'login']);
 
 Route::group(['middleware' => 'api.auth'], function () {
+
+    Route::get('logout', [LoginController::class, 'logout']);
     Route::get('user', [LoginController::class, 'details']);
 
 //
