@@ -29,6 +29,21 @@ class LoginController extends Controller
             $success = $user->createToken('MyApp')->plainTextToken;
 
             return $this->success(['token' => $success], AuthConstants::LOGIN);
+
+            // https://github.com/nzesalem/nuxtjs-laravel-graphql-backend/blob/main/app/GraphQL/Mutations/Auth/LoginMutator.php
+//            $token = auth()->attempt($credentials);
+//
+//            if (! $token) {
+//                throw new RuntimeValidationException(
+//                    'Email or password is incorrect',
+//                    'InvalidCredentials'
+//                );
+//            }
+//
+//            return [
+//                'token' => $token,
+//                'expiresIn' => auth()->factory()->getTTL() * 60
+//            ];
         }
 
         return $this->error([], AuthConstants::VALIDATION);

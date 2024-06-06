@@ -1,7 +1,12 @@
 import { ref, computed, toRaw } from "vue";
 import { defineStore, acceptHMRUpdate } from "pinia";
 
+import { useComposable } from "./composable";
+
+
 export const useStore = defineStore("viewer", () => {
+  const { login:loginComp } = useComposable();
+
   const assignGetUserAuthorized = () => {
     let temp = false;
     console.log(
@@ -20,6 +25,8 @@ export const useStore = defineStore("viewer", () => {
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
+      loginComp({email: "dealenx@gmail.com",password: "allatau"});
+      // console.log("dataLogin", dataLogin)
       getUserAuthorized.value = true;
       console.log("getUserAuthorized.value", getUserAuthorized.value);
       localStorage.setItem(

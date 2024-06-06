@@ -48,7 +48,7 @@ export default defineComponent({
             console.log('Success:', values["email"]);
 
             // await auth.signIn({ ...values });
-            await login('test@site.ru', '123')
+            await login('', '')
             navigateTo("/");
         };
 
