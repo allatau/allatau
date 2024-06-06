@@ -48,17 +48,18 @@ services:
 #            timeout: 5s
 
 
+    # Может не быстро запуститься, подождать примерно 30-60 секунд
     mysql:
         image: mysql:8
         ports:
             - 3306:3306
         volumes:
-            - 'sailmysql:/var/lib/mysql'
+            - ~/apps/mysql:/var/lib/mysql
         environment:
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_USER: '${DB_USERNAME}'
-            MYSQL_DATABASE: '${DB_DATABASE}'
+            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_DATABASE=${DB_DATABASE}
 
 #    mysql-db:
 #        image: 'mysql:8.0'

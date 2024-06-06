@@ -3,6 +3,8 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 
 import { useComposable } from "./composable";
 
+import axios from "axios"
+
 
 export const useStore = defineStore("viewer", () => {
   const { login:loginComp } = useComposable();
@@ -21,14 +23,48 @@ export const useStore = defineStore("viewer", () => {
 
     return temp;
   };
+
+  const assignGetUserToken = () => {
+    let temp = "";
+    console.log(
+      "localStorage.getItem",
+      localStorage.getItem("getUserToken")
+    );
+    try {
+      const localGetUserToken: any =
+        localStorage.getItem("getUserAuthorized");
+      temp = localGetUserToken;
+    } catch (error) {}
+
+    return temp;
+  };
+
   const getUserAuthorized = ref(assignGetUserAuthorized());
+  const token = ref(assignGetUserToken());
 
   const login = async (email: string, password: string): Promise<void> => {
+    let loginParams = JSON.stringify({
+      "email": "dealenx@gmail.com",
+      "password": "allatau"
+    });
+
     try {
-      loginComp({email: "dealenx@gmail.com",password: "allatau"});
-      // console.log("dataLogin", dataLogin)
+
+      // loginComp({email: "dealenx@gmail.com",password: "allatau"});
+      const loginResponse  = await axios.request({
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:8000/api/login',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data : loginParams
+      } as any)
+
+      token.value = loginResponse.data.data.token
+
       getUserAuthorized.value = true;
-      console.log("getUserAuthorized.value", getUserAuthorized.value);
+
       localStorage.setItem(
         "getUserAuthorized",
         String(getUserAuthorized.value)
@@ -38,7 +74,9 @@ export const useStore = defineStore("viewer", () => {
         "localStorage.getItem",
         localStorage.getItem("getUserAuthorized")
       );
-    } catch (error) {}
+    } catch (error) {
+      getUserAuthorized.value = false;
+    }
   };
 
   const logout = async (): Promise<void> => {
@@ -55,6 +93,7 @@ export const useStore = defineStore("viewer", () => {
 
   return {
     getUserAuthorized,
+    token,
     login,
     logout,
   };

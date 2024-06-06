@@ -9,6 +9,19 @@ php artisan serve
 
 Затем открыть graphql playground: [localhost:8000/graphql-playground](http://localhost:8000/graphql-playground)
 
+
+# Добавить пользователя
+
+```bash
+php artisan tinker
+```
+
+
+```bash
+DB::table('users')->insert(['name'=>'allatau','email'=>'allatau@site.com','password'=>Hash::make('allatau')])
+```
+
+
 ## Установка расширения для mysql
 
 ```
