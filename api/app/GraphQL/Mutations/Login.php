@@ -6,6 +6,7 @@ use App\Constants\AuthConstants;
 use App\Jobs\SendTaskJob;
 use App\Models\Task;
 use Illuminate\Support\Facades\Log;
+use GraphQL\Error\Error;
 
 
 class Login
@@ -22,28 +23,18 @@ class Login
             'password' => $args['password']
         ];
 
-        if (auth()->attempt($credentials)) {
-            Log::info($args["email"]);
-
-
-            $user = auth()->user();
-
-            $user->tokens()->delete();
-
-            $success = $user->createToken('MyApp')->plainTextToken;
-
-//            Log::info(['token' => $success]);
-
-            return ['token' => $success];
-//
-//            return $this->success(['token' => $success], AuthConstants::LOGIN);
+        if( ! auth()->attempt($credentials)) {
+            throw new Error('Invalid credentials.');
         }
 
-//        $item = [
-//            "token" => "hello_world"
-//        ];
-//
-//
-//        return $item;
+        $user = auth()->user();
+
+        $user->tokens()->delete();
+
+        $success = $user->createToken('MyApp')->plainTextToken;
+
+
+        return ['token' => $success];
+
     }
 }

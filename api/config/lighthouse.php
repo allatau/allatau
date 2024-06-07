@@ -21,11 +21,13 @@ return [
         'middleware' => [
 
             // Middleware для авторизации
-            \App\Http\Middleware\ApiAuthenticate::class,
+//             \App\Http\Middleware\ApiAuthenticate::class,
 
+        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         ],
 
     ],
+    'guards' => ['sanctum'],
 //    'middleware' => [
 //        'auth.api',
 //    ],

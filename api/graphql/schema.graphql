@@ -15,7 +15,7 @@ type Query {
 
     userViewer: User @auth(guard: "api")
 
-    hello: String!
+    hello: String! @guard
 
     computingResource(id: Int! @eq): ComputingResource @find
     computingResources: [ComputingResource!]! @all
@@ -34,6 +34,7 @@ type Mutation {
     deleteUser(id: ID!): User @delete
 
     login(email: String, password: String): UserTokenDetails
+    logout: User @guard
 
     createComputingResource(name: String!, port: String!, host: String!, login: String!, password: String!): ComputingResource
     deleteComputingResource(id: ID!): ComputingResource
