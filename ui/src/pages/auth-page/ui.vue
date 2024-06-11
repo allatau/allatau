@@ -49,7 +49,11 @@ export default defineComponent({
 
             // await auth.signIn({ ...values });
             await login('', '')
-            navigateTo("/");
+            // navigateTo("/");
+            reloadNuxtApp({
+                path: "/",
+                ttl: 100, // default 10000
+            });
         };
 
         const onFinishFailed = (errorInfo: any) => {

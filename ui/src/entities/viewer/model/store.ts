@@ -32,7 +32,7 @@ export const useStore = defineStore("viewer", () => {
     );
     try {
       const localGetUserToken: any =
-        localStorage.getItem("getUserAuthorized");
+        localStorage.getItem("getUserToken");
       temp = localGetUserToken;
     } catch (error) {}
 
@@ -61,14 +61,23 @@ export const useStore = defineStore("viewer", () => {
         data : loginParams
       } as any)
 
+      console.log("loginResponse.data.data.token", loginResponse.data.data.token)
+
       token.value = loginResponse.data.data.token
 
       getUserAuthorized.value = true;
-
+  
       localStorage.setItem(
         "getUserAuthorized",
         String(getUserAuthorized.value)
       );
+      
+
+      localStorage.setItem(
+        "getUserToken",
+        String(token.value)
+      );
+
 
       console.log(
         "localStorage.getItem",

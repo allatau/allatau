@@ -17,8 +17,8 @@ type Query {
 
     hello: String! @guard
 
-    computingResource(id: Int! @eq): ComputingResource @find
-    computingResources: [ComputingResource!]! @all
+    computingResource(id: Int! @eq): ComputingResource @find @guard
+    computingResources: [ComputingResource!]! @all @guard
 
     tasks: [Task!]!
     taskById(id: ID!): Task
