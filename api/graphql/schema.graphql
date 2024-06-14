@@ -20,9 +20,13 @@ type Query {
     computingResource(id: Int! @eq): ComputingResource @find @guard
     computingResources: [ComputingResource!]! @all @guard
 
+    projects: [Project!]! @all
     tasks: [Task!]!
     taskById(id: ID!): Task
     TaskJobsByTaskId(id: ID!): [TaskJobDetails]!
+
+#    projects: [Project!]!
+#    projectById(id: ID!): Project
 
     orchestratorServerAvailable: ResourceStatus
 }
@@ -38,6 +42,8 @@ type Mutation {
 
     createComputingResource(name: String!, port: String!, host: String!, login: String!, password: String!): ComputingResource
     deleteComputingResource(id: ID!): ComputingResource
+
+    createProject(title: String!, description: String): Project
 
     createTask(name: String!, computing_resource_id: ID!, script: String, computational_model_resource: String, numerical_model: String, converter_service: String): Task
     startTask(id: ID!): Task
@@ -89,6 +95,7 @@ type Task {
     jobs: [String]
     computational_model_resource: String
     computing_resource: ComputingResource! @belongsTo
+    project: Project
     type: String
     extra: String
     numerical_model: String
@@ -101,6 +108,12 @@ type ResourceStatus {
 
 type ConverterService {
     type: String
+}
+
+type Project {
+    id: ID!
+    title: String!
+    description: String
 }
 
 type Post {
