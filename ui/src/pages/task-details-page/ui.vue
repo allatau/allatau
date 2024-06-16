@@ -1,7 +1,7 @@
 <template>
     <div class="tasks-wrapper" v-if="task !== null">
         <a-page-header :loading="loading" v-if="task !== null" style="border: 1px solid rgb(235, 237, 240);width: 100%"
-            :title="`${task.name}`" :sub-title="`${uuid}`" @back="() => navigateTo('/')">
+            :title="`${task.name}`" :sub-title="`${uuid}`" @back="() => this.$router.go(-1)">
             <template #tags>
                 <a-tag>{{ task.status }}</a-tag>
             </template>
@@ -9,7 +9,8 @@
         <TasksList :onlyTaskShow="uuid" :fetchInterval="4000" />
         <a-timeline :pending="pendingInfo">
             <a-timeline-item v-for="log in jobsDetails" v-bind:key="log.logInstant">
-                <p><a-tag>{{ log.level }}</a-tag> <a-tag>{{ log.logInstant }}</a-tag> <span v-html="log.logMessage"></span>
+                <p><a-tag>{{ log.level }}</a-tag> <a-tag>{{ log.logInstant }}</a-tag> <span
+                        v-html="log.logMessage"></span>
                 </p>
             </a-timeline-item>
             <!-- <a-timeline-item color="red">
@@ -111,7 +112,7 @@ export default defineComponent({
     },
 });
 </script>
-  
+
 <style>
 .tasks-wrapper {
     display: flex;
@@ -123,4 +124,3 @@ export default defineComponent({
     width: 100%;
 }
 </style>
-  

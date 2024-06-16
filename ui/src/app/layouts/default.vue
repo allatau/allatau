@@ -5,6 +5,10 @@
             <a-menu v-model:selectedKeys="selectedKeys" @click="handleClick" :default-selected-keys="['products']"
                 :default-open-keys="['sub1']" theme="dark" mode="inline">
 
+                <a-menu-item key="/projects">
+                    <dashboard-outlined />
+                    <span>Проекты</span>
+                </a-menu-item>
                 <a-menu-item key="/">
                     <OrderedListOutlined />
                     <span>Расчеты</span>
@@ -14,6 +18,7 @@
                     <span>Вычислительные ресурсы</span>
                 </a-menu-item>
 
+
                 <!-- <a-sub-menu key="/debit-debts">
                     <template #title>
                         <span>
@@ -21,18 +26,20 @@
                             <span>З</span>
                         </span>
                     </template>
-                     <a-menu-item key="/catalog">Список</a-menu-item>
-                    <a-menu-item key="/catalog/add">Добавить</a-menu-item>
-                </a-sub-menu> -->
+<a-menu-item key="/catalog">Список</a-menu-item>
+<a-menu-item key="/catalog/add">Добавить</a-menu-item>
+</a-sub-menu> -->
             </a-menu>
         </a-layout-sider>
         <a-layout>
             <a-layout-header
                 style="background: #ffffff; border-bottom: 1px solid #ddd; padding-right: 18px; display: flex; justify-content: space-between;">
                 <div style="display: flex; ">
-                    <p v-if="ComputingResourceStatus[resourceStatus] === ComputingResourceStatus.ONLINE">Сервер оркестрации
+                    <p v-if="ComputingResourceStatus[resourceStatus] === ComputingResourceStatus.ONLINE">Сервер
+                        оркестрации
                         процессов: <a-tag color="green">{{ resourceStatus }}</a-tag></p>
-                    <p v-if="ComputingResourceStatus[resourceStatus] === ComputingResourceStatus.OFFLINE">Сервер оркестрации
+                    <p v-if="ComputingResourceStatus[resourceStatus] === ComputingResourceStatus.OFFLINE">Сервер
+                        оркестрации
                         процессов: <a-tag color="red">{{ resourceStatus }}</a-tag></p>
                 </div>
                 <div style="display: flex; ">

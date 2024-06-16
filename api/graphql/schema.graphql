@@ -21,6 +21,7 @@ type Query {
     computingResources: [ComputingResource!]! @all @guard
 
     projects: [Project!]! @all
+    project(id: Int! @eq): Project @find @guard
     tasks: [Task!]!
     taskById(id: ID!): Task
     TaskJobsByTaskId(id: ID!): [TaskJobDetails]!
@@ -95,7 +96,7 @@ type Task {
     jobs: [String]
     computational_model_resource: String
     computing_resource: ComputingResource! @belongsTo
-    project: Project
+#    project: Project @belongsTo
     type: String
     extra: String
     numerical_model: String
