@@ -49,6 +49,7 @@ type Mutation {
 
     createTask(name: String!, computing_resource_id: ID!, project_id: ID!, script: String, computational_model_resource: String, numerical_model: String, converter_service: String): Task
     startTask(id: ID!): Task
+    dublicateTask(id: ID!): Task
     deleteTask(id: ID!): Task
     checkTask(id: ID!): Task
     abortTask(id: ID!): Task

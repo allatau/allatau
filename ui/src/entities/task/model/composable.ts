@@ -99,6 +99,17 @@ const deleteTaskMutation = gqlBuilder.mutation({
   fields: ["id"],
 });
 
+const dublicateTaskMutation = gqlBuilder.mutation({
+  operation: "dublicateTask",
+  variables: {
+    id: {
+      type: "ID",
+      required: true,
+    },
+  },
+  fields: ["id"],
+});
+
 const startTaskMutation = gqlBuilder.mutation({
   operation: "startTask",
   variables: {
@@ -144,6 +155,10 @@ export function useComposable() {
 
   const { mutate: startTask } = useMutation(
     convStringToGql(startTaskMutation.query)
+  );
+
+  const { mutate: dublicate } = useMutation(
+    convStringToGql(dublicateTaskMutation.query)
   );
 
   const { mutate: checkTask } = useMutation(
@@ -202,5 +217,6 @@ export function useComposable() {
     startTask,
     checkTask,
     abortTask,
+    dublicate,
   };
 }

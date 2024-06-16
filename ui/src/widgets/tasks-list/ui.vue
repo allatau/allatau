@@ -33,6 +33,11 @@
                             <CloseOutlined />
                         </template>
                     </a-button>
+                    <a-button @click="() => dublicateItem(text.id)" shape="circle">
+                        <template #icon>
+                            <CopyOutlined />
+                        </template>
+                    </a-button>
                 </div>
             </template>
             <template v-if="column.key === 'script'">
@@ -55,7 +60,8 @@ import {
     CloseOutlined,
     ReloadOutlined,
     StopOutlined,
-    InfoCircleOutlined
+    InfoCircleOutlined,
+    CopyOutlined,
 } from "@ant-design/icons-vue";
 
 import { TaskAdding } from "~/src/widgets/task-adding";
@@ -107,7 +113,8 @@ export default defineComponent({
         FilesTree,
         ReloadOutlined,
         StopOutlined,
-        InfoCircleOutlined
+        InfoCircleOutlined,
+        CopyOutlined,
 
     },
     props: {
@@ -128,7 +135,7 @@ export default defineComponent({
         },
     },
     setup(props) {
-        const { fetch, deleteTask, startTask, checkTask, abortTask } =
+        const { fetch, deleteTask, startTask, checkTask, abortTask, dublicate } =
             TaskModel.useComposable();
 
         const { result, loading } = fetch(props.fetchInterval, props.projectId)
@@ -173,6 +180,12 @@ export default defineComponent({
             abortTask({ id });
         };
 
+
+        const dublicateItem = async (id) => {
+            dublicate({ id });
+        };
+
+
         const getTaskLink = (id, projectId) => {
             let l = `task-details?id=${id}`
 
@@ -192,6 +205,7 @@ export default defineComponent({
             startItem,
             checkItem,
             abortItem,
+            dublicateItem,
             TaskStatus,
             onlyTaskShow: props.onlyTaskShow,
             getTaskLink,
