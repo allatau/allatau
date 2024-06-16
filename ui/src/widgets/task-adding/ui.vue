@@ -10,7 +10,7 @@
                                                     max-width: 80%;
                                                     width: 100%;
                                                   ">
-                <AddTaskForm @submit="onSubmit" ref="addTaskFormRef" />
+                <AddTaskForm @submit="onSubmit" ref="addTaskFormRef" :project-id="projectId" />
                 <!-- <IframeManagement /> -->
 
             </div>
@@ -32,7 +32,14 @@ export default defineComponent({
         AddTaskForm,
         // IframeManagement,
     },
-    setup() {
+    props: {
+        projectId: {
+            type: Number,
+            required: false,
+            default: -1
+        },
+    },
+    setup(props) {
         const { createTask } = TaskModel.useComposable();
 
         const addTaskFormRef = ref(null);
@@ -60,6 +67,7 @@ export default defineComponent({
                 computational_model_resource: values.filePath,
                 converter_service: JSON.stringify(values.converterService),
                 numerical_model: values.numericalModel,
+                project_id: values.projectId
             });
             closeModal();
         };
@@ -70,6 +78,7 @@ export default defineComponent({
             showModal,
             handleOk,
             onSubmit,
+            projectId: props.projectId
         };
     },
 });
@@ -99,4 +108,3 @@ export default defineComponent({
     min-height: 100vh;
 }
 </style>
-  

@@ -20,6 +20,7 @@ class CreateTask
         $task->script = $args['script'] ?? "";
         $task->jobs = "[]";
         $task->computing_resource_id = $args['computing_resource_id'];
+        $task->project_id = $args['project_id'];
         $task->computational_model_resource = $args['computational_model_resource']  ?? "";
         $task->extra = "{}";
         $task->type = "default";

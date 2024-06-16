@@ -12,6 +12,10 @@
       </a-select>
     </a-form-item>
 
+    <a-form-item label="Проект" name="projectId">
+      <a-input v-model:value="formState.projectId" :disabled="true" />
+    </a-form-item>
+
     <a-form-item label="Скрипт" name="script" :rules="[{ required: true, message: 'Введите наименование задачи!' }]">
       <a-textarea :rows="10" v-model:value="formState.script" />
     </a-form-item>
@@ -46,8 +50,6 @@
     </a-form-item>
 
 
-
-
     <!-- <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
       <a-button type="primary" html-type="submit">Submit</a-button>
     </a-form-item> -->
@@ -66,6 +68,13 @@ import axios from "axios";
 export default defineComponent({
   components: {
     IframeManagement
+  },
+  props: {
+    projectId: {
+      type: Number,
+      required: false,
+      default: -1
+    },
   },
   emits: ["submit"],
   setup(props, { emit }) {
@@ -92,6 +101,7 @@ export default defineComponent({
       computingClusterId: undefined,
       numericalModel: null,
       converterService: "https://microservice-zero.vercel.app",
+      projectId: props.projectId,
       script:
         "#!/bin/bash\nsource /opt/openfoam9/etc/bashrc\nblockMesh\nicoFoam",
     });
@@ -99,6 +109,8 @@ export default defineComponent({
 
     const onFinish = (values) => {
       let path = ""
+
+      console.log("values", values)
 
       try {
         path = values?.file[0]?.response?.path
@@ -189,6 +201,8 @@ export default defineComponent({
         },
         false
       );
+      formState.projectId = props.projectId
+
     });
 
     const handleIframeChange = (data) => {

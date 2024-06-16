@@ -17,6 +17,7 @@ class CreateTasksTable extends Migration
             $table->uuid('id')->primary();
             $table->timestamps();
             $table->unsignedBigInteger('computing_resource_id');
+            $table->unsignedBigInteger('project_id');
             $table->string('name');
             $table->string('status')->default("DRAFT");
             $table->string('files');

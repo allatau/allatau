@@ -2,7 +2,7 @@
     <a-table class="tasks-table" :loading="isLoading" :columns="columns" :data-source="convertedData" bordered>
         <template #bodyCell="{ column, text, record }">
             <template v-if="column.key === 'name'">
-                <nuxt-link :to="`task-details?id=${record.id}`">{{ record.name }}</nuxt-link>
+                <nuxt-link :to="getTaskLink(record.id, projectId)">{{ record.name }}</nuxt-link>
             </template>
             <template v-if="column.key === 'action'">
                 <div style="display: flex; gap: 8px">
@@ -120,13 +120,18 @@ export default defineComponent({
             type: Number,
             required: false,
             default: 2000
-        }
+        },
+        projectId: {
+            type: Number,
+            required: false,
+            default: -1
+        },
     },
     setup(props) {
         const { fetch, deleteTask, startTask, checkTask, abortTask } =
             TaskModel.useComposable();
 
-        const { result, loading } = fetch(props.fetchInterval)
+        const { result, loading } = fetch(props.fetchInterval, props.projectId)
 
         const convertedData = computed(() => {
             let list = [];
@@ -168,6 +173,17 @@ export default defineComponent({
             abortTask({ id });
         };
 
+        const getTaskLink = (id, projectId) => {
+            let l = `task-details?id=${id}`
+
+            if (projectId != "-1") {
+                l += `&project_id=${projectId}`
+            }
+
+            return l
+        }
+
+
         return {
             convertedData,
             columns,
@@ -177,13 +193,15 @@ export default defineComponent({
             checkItem,
             abortItem,
             TaskStatus,
-            onlyTaskShow: props.onlyTaskShow
-
+            onlyTaskShow: props.onlyTaskShow,
+            getTaskLink,
+            projectId: props.projectId,
+            props,
         };
     },
 });
 </script>
-  
+
 <style>
 .tasks-wrapper {
     display: flex;
@@ -195,4 +213,3 @@ export default defineComponent({
     width: 100%;
 }
 </style>
-  

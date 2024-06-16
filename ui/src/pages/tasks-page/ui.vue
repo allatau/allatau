@@ -1,6 +1,6 @@
 <template>
     <div class="tasks-wrapper">
-        <TaskAdding /> <br />
+        <!-- <TaskAdding /> <br /> -->
         <TasksList />
     </div>
 </template>
@@ -19,7 +19,7 @@ export default defineComponent({
     setup() { },
 });
 </script>
-  
+
 <style>
 .tasks-wrapper {
     display: flex;
@@ -31,4 +31,3 @@ export default defineComponent({
     width: 100%;
 }
 </style>
-  

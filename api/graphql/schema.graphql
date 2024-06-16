@@ -22,7 +22,7 @@ type Query {
 
     projects: [Project!]! @all
     project(id: Int! @eq): Project @find @guard
-    tasks: [Task!]!
+    tasks(project_id: ID): [Task!]!
     taskById(id: ID!): Task
     TaskJobsByTaskId(id: ID!): [TaskJobDetails]!
 
@@ -46,7 +46,7 @@ type Mutation {
 
     createProject(title: String!, description: String): Project
 
-    createTask(name: String!, computing_resource_id: ID!, script: String, computational_model_resource: String, numerical_model: String, converter_service: String): Task
+    createTask(name: String!, computing_resource_id: ID!, project_id: ID!, script: String, computational_model_resource: String, numerical_model: String, converter_service: String): Task
     startTask(id: ID!): Task
     deleteTask(id: ID!): Task
     checkTask(id: ID!): Task
@@ -69,6 +69,12 @@ type User {
     email: String!
     created_at: DateTime
     updated_at: DateTime
+}
+
+type Project {
+    id: ID!
+    title: String!
+    description: String
 }
 
 type ComputingResource {
@@ -96,7 +102,7 @@ type Task {
     jobs: [String]
     computational_model_resource: String
     computing_resource: ComputingResource! @belongsTo
-#    project: Project @belongsTo
+    project: Project! @belongsTo
     type: String
     extra: String
     numerical_model: String
@@ -111,11 +117,7 @@ type ConverterService {
     type: String
 }
 
-type Project {
-    id: ID!
-    title: String!
-    description: String
-}
+
 
 type Post {
     id: ID!

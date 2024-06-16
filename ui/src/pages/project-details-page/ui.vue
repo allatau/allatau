@@ -1,12 +1,10 @@
 <template>
-    <div class="tasks-wrapper">
-
-        <a-page-header :loading="loading" v-if="item !== null" :title="`${item.title}`"
-            :sub-title="`${item.description}`" @back="() => this.$router.go(-1)">
-
+    <div class="tasks-wrapper" v-if="item !== null">
+        <a-page-header :loading="loading" :title="`${item.title}`" :sub-title="`${item.description}`"
+            @back="() => this.$router.go(-1)">
         </a-page-header><br />
-        <TaskAdding /> <br />
-        <TasksList />
+        <TaskAdding v-if="item.id != -1" :project-id="item.id" /> <br />
+        <TasksList :project-id="item.id" />
     </div>
 </template>
 <script>

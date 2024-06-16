@@ -46,6 +46,11 @@ class Task extends Model
         return $this->belongsTo(ComputingResource::class);
     }
 
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
+
 
 
 }

@@ -9,21 +9,38 @@ use Illuminate\Support\Facades\Log;
 
 class Tasks
 {
-    public function __invoke()
+    public function __invoke($_, array $args)
     {
         $tasks = Task::all();
 
-        for ($i = 0; $i < count($tasks); $i++) {
+        $tasks_filtered = $tasks;
 
-//            $tasks[$i]->jobs =  json_decode($tasks[$i]->jobs);
+//        Log:info($args);
 
-            if($tasks[$i]->status != TaskStatus::COMPLETED->name and $tasks[$i]->status != TaskStatus::DRAFT->name) {
-                Log:info("task: " . $tasks[$i]->status);
-                CheckTaskJob::dispatch($tasks[$i]->id);
+        if(isset($args['project_id'])) {
+            $tasks_filtered = [];
+            foreach ($tasks as $task) {
+                if($task->project->id == $args['project_id']) {
+                    array_push($tasks_filtered, $task);
+                }
+
             }
 
         }
 
-        return $tasks;
+        for ($i = 0; $i < count($tasks_filtered); $i++) {
+
+//            $tasks[$i]->jobs =  json_decode($tasks[$i]->jobs);
+
+
+
+            if($tasks_filtered[$i]->status != TaskStatus::COMPLETED->name and $tasks_filtered[$i]->status != TaskStatus::DRAFT->name) {
+//                Log:info("task: " . $tasks[$i]->status);
+                CheckTaskJob::dispatch($tasks_filtered[$i]->id);
+            }
+
+        }
+
+        return $tasks_filtered;
     }
 }

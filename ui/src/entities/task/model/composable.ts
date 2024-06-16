@@ -7,7 +7,13 @@ import { gql } from "@apollo/client/core";
 import { convStringToGql } from "~/src/shared/lib";
 
 const queryTasks = gqlBuilder.query({
-  operation: " tasks",
+  operation: "tasks",
+  variables: {
+    project_id: {
+      type: "ID",
+      required: false,
+    },
+  },
   fields: [
     "id",
     "name",
@@ -55,6 +61,10 @@ const createTaskMutation = gqlBuilder.mutation({
       required: true,
     },
     computing_resource_id: {
+      type: "ID",
+      required: true,
+    },
+    project_id: {
       type: "ID",
       required: true,
     },
@@ -144,8 +154,14 @@ export function useComposable() {
     convStringToGql(abortTaskMutation.query)
   );
 
-  const fetch = (pollInterval: 10000) => {
-    return useQuery(convStringToGql(queryTasks.query), null, {
+  const fetch = (pollInterval: 10000, project_id: Number = -1) => {
+    let params = null;
+    if(project_id !== -1) {
+      params = {
+        project_id: project_id
+      }
+    }
+    return useQuery(convStringToGql(queryTasks.query), params as any, {
       pollInterval,
     });
   };
