@@ -43,7 +43,7 @@ const createProjectMutation = gqlBuilder.mutation({
       required: false,
     },
   },
-  fields: ["id", "title", "description"],
+  fields: ["title", "description"],
 });
 
 /* GraphQL with VueApollo */

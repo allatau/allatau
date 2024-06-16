@@ -1,6 +1,6 @@
 <template>
     <div class="projects-wrapper">
-        <TaskAdding /> <br />
+        <ProjectAdding /> <br />
         <ProjectsList />
     </div>
 </template>
@@ -8,13 +8,13 @@
 import { defineComponent, computed } from "vue";
 
 
-import { TaskAdding } from "~/src/widgets/task-adding";
+import { ProjectAdding } from "~/src/widgets/project-adding";
 import { ProjectsList } from "~/src/widgets/projects-list";
 
 export default defineComponent({
     components: {
         ProjectsList,
-        TaskAdding,
+        ProjectAdding,
     },
     setup() { },
 });
