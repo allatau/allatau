@@ -45,6 +45,7 @@ type Mutation {
     deleteComputingResource(id: ID!): ComputingResource
 
     createProject(title: String!, description: String): Project
+    deleteProject(id: ID!): Project
 
     createTask(name: String!, computing_resource_id: ID!, project_id: ID!, script: String, computational_model_resource: String, numerical_model: String, converter_service: String): Task
     startTask(id: ID!): Task
