@@ -18,7 +18,7 @@ class CreateTask
         $task->status = TaskStatus::DRAFT->name;
         $task->files = "{}";
         $task->script = $args['script'] ?? "";
-        $task->jobs = $args['script'] ?? "[]";
+        $task->jobs = "[]";
         $task->computing_resource_id = $args['computing_resource_id'];
         $task->computational_model_resource = $args['computational_model_resource']  ?? "";
         $task->extra = "{}";
