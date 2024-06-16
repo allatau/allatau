@@ -46,10 +46,25 @@ const createProjectMutation = gqlBuilder.mutation({
   fields: ["title", "description"],
 });
 
+const deleteProjectMutation = gqlBuilder.mutation({
+  operation: "deleteProject",
+  variables: {
+    id: {
+      type: "ID",
+      required: true,
+    },
+  },
+  fields: ["id"],
+});
+
 /* GraphQL with VueApollo */
 export function useComposable() {
   const { mutate: create } = useMutation(
     convStringToGql(createProjectMutation.query)
+  );
+
+  const { mutate: deleteItem} = useMutation(
+    convStringToGql(deleteProjectMutation.query)
   );
 
   const fetch = (pollInterval: 10000) => {
@@ -77,5 +92,6 @@ export function useComposable() {
 
     // mutations
     create,
+    deleteItem,
   };
 }

@@ -5,6 +5,16 @@
             <template v-if="column.key === 'name'">
                 <nuxt-link :to="`project-details?id=${record.id}`">{{ record.name }}</nuxt-link>
             </template>
+
+            <template v-if="column.key === 'action'">
+                <div style="display: flex; gap: 8px">
+                    <a-button @click="() => deleteItemFunc(text.id)" type="primary" shape="circle" danger>
+                        <template #icon>
+                            <CloseOutlined />
+                        </template>
+                    </a-button>
+                </div>
+            </template>
         </template>
     </a-table>
 </template>
@@ -38,6 +48,10 @@ const columns = [
         dataIndex: "desc",
         key: "desc",
     },
+    {
+        title: "Action",
+        key: "action",
+    },
 ];
 
 export default defineComponent({
@@ -63,7 +77,7 @@ export default defineComponent({
         }
     },
     setup(props) {
-        const { fetch, deleteTask, startTask, checkTask, abortTask } =
+        const { fetch, deleteItem } =
             ProjectModel.useComposable();
 
         const { result, loading } = fetch(props.fetchInterval)
@@ -93,30 +107,15 @@ export default defineComponent({
             return list
         });
 
-        const deleteItem = async (id) => {
-            deleteTask({ id });
-        };
-
-        const startItem = async (id) => {
-            startTask({ id });
-        };
-
-        const checkItem = async (id) => {
-            checkTask({ id });
-        };
-
-        const abortItem = async (id) => {
-            abortTask({ id });
+        const deleteItemFunc = async (id) => {
+            deleteItem({ id });
         };
 
         return {
             convertedData,
             columns,
             isLoading: loading,
-            deleteItem,
-            startItem,
-            checkItem,
-            abortItem,
+            deleteItemFunc,
             TaskStatus,
             onlyTaskShow: props.onlyTaskShow
 
