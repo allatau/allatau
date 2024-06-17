@@ -6,6 +6,10 @@
                 <a-tag>{{ task.status }}</a-tag>
                 <nuxt-link :to="`/project-details?id=${task.project.id}`"><a-tag color="blue">{{ task.project.title
                         }}</a-tag></nuxt-link>
+
+            </template>
+            <template #extra>
+                <a-button @click="() => check()">Update the task's jobs</a-button>
             </template>
         </a-page-header><br />
         <TasksList :onlyTaskShow="uuid" :fetchInterval="4000" />
@@ -42,13 +46,17 @@ export default defineComponent({
 
         const route = useRoute();
 
-        const { fetchById, fetchTaskJobsByTaskId } =
+        const { fetchById, fetchTaskJobsByTaskId, checkTask } =
             TaskModel.useComposable();
         const { result: resultJobs, loadingJobs } = fetchTaskJobsByTaskId(route.query.id)
         const { result, loading } = fetchById(route.query.id)
 
 
         console.log("resultJobs", resultJobs);
+
+        const check = async () => {
+            checkTask({ id: route.query.id })
+        }
 
 
 
@@ -109,7 +117,8 @@ export default defineComponent({
             task,
             loading,
             jobsDetails,
-            pendingInfo
+            pendingInfo,
+            check
         }
     },
 });
