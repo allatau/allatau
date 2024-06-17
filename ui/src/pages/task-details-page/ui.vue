@@ -4,6 +4,8 @@
             :title="`${task.name}`" :sub-title="`${uuid}`" @back="() => this.$router.go(-1)">
             <template #tags>
                 <a-tag>{{ task.status }}</a-tag>
+                <nuxt-link :to="`/project-details?id=${task.project.id}`"><a-tag color="blue">{{ task.project.title
+                        }}</a-tag></nuxt-link>
             </template>
         </a-page-header><br />
         <TasksList :onlyTaskShow="uuid" :fetchInterval="4000" />

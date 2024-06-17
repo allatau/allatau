@@ -21,6 +21,7 @@ const queryTasks = gqlBuilder.query({
     "script",
     "files",
     { computing_resource: ["id", "name"] },
+    { project: ["id", "title", "description"] },
   ],
 });
 
@@ -50,6 +51,7 @@ const queryTaskById = gqlBuilder.query({
     "script",
     "files",
     { computing_resource: ["id", "name"] },
+    { project: ["id", "title", "description"] },
   ],
 });
 
