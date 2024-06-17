@@ -1,8 +1,10 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\API\FileUploadController;
+use App\Http\Controllers\ArchiveFileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,4 +22,5 @@ Route::get('/', function () {
 
 //Route::get('view', [FileController::class, 'index']);
 Route::get('/public/cases/{filename}', [FileController::class, 'getfile']);
+Route::get('/public/archives/{filename}', [ArchiveFileController::class, 'getfile']);
 Route::post('/uploading-file-api', [FileUploadController::class, 'upload']);

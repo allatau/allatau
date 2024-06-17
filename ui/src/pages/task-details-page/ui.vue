@@ -10,7 +10,10 @@
             </template>
             <template #extra>
                 <a-button @click="() => check()">Update the task's jobs</a-button>
+                <a
+                    href="http://127.0.0.1:8000/public/archives/32e9f38e-5755-4d4b-aab6-468244379409"><a-button>Download</a-button></a>
             </template>
+
         </a-page-header><br />
         <TasksList :onlyTaskShow="uuid" :fetchInterval="4000" />
         <a-timeline :pending="pendingInfo">
