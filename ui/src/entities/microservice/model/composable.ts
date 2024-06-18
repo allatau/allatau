@@ -85,10 +85,24 @@ export function useComposable() {
     );
   };
 
+  const { result, loading, error } = useQuery(
+    convStringToGql(queryList.query),
+    null,
+    {
+      pollInterval: 10000,
+    }
+  );
+
+  const items = useResult(result, [], (response) => {
+    console.log("response", response);
+    return response.microservices;
+  });
+
   return {
     // query
     fetch,
     fetchById,
+    items,
 
     // mutations
     createItem,

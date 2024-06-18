@@ -37,7 +37,11 @@
 
     <a-form-item v-if="isReadyCase === false" label="Сервис для формирования расчетного кейса" name="converterService"
       :rules="[{ required: false, message: 'Введите сервис для формирования расчетного кейса!' }]">
-      <a-input v-model:value="formState.converterService" />
+      <!-- <a-input v-model:value="formState.converterService" /> -->
+      <a-select v-model:value="formState.converterService" placeholder="Выберите вычислительный ресурс">
+        <a-select-option v-for="item in microservices" :value="item.resource" v-bind:key="item.id">{{
+          item.name }}</a-select-option>
+      </a-select>
     </a-form-item>
 
     <a-form-item :rules="[{ required: false, message: 'Не получены данные из автономного виджета' }]"
@@ -61,6 +65,7 @@ import { defineComponent, reactive, ref, toRefs, toRaw, computed, onMounted } fr
 import { message } from "ant-design-vue";
 
 import { ComputingResourceModel } from "~/src/entities/computing-resource";
+import { MicroserviceModel } from "~/src/entities/microservice";
 
 import IframeManagement from "./IframeManagement.vue";
 
@@ -79,6 +84,7 @@ export default defineComponent({
   emits: ["submit"],
   setup(props, { emit }) {
     const { computingResources } = ComputingResourceModel.useComposable()
+    const { items: microservices } = MicroserviceModel.useComposable()
 
     const computingresources = computed(() => {
       return computingResources.value.map((payloads) => {
@@ -233,6 +239,7 @@ export default defineComponent({
       submitForm,
       resetFields,
       computingresources,
+      microservices,
       file,
       uploading,
       handleChange,
