@@ -30,6 +30,9 @@ type Query {
 
     microservices: [Microservice!]! @all
     microservice(id: ID! @eq): Microservice @find @guard
+
+    webWidgets: [WebWidget!]! @all
+    webWidget(id: ID! @eq): WebWidget @find @guard
 }
 
 type Mutation {
@@ -57,6 +60,9 @@ type Mutation {
 
     createMicroservice(name: String!, resource: String!): Microservice @create
     deleteMicroservice(id: ID! @eq): Microservice @delete
+
+    createWebWidget(name: String!, resource: String!): WebWidget @create
+    deleteWebWidget(id: ID! @eq): WebWidget @delete
 }
 
 type UserTokenDetails {
@@ -118,9 +124,13 @@ type ResourceStatus {
     status: ComputingResourceStatus
 }
 
-
-
 type Microservice {
+    id: ID!
+    name: String
+    resource: String
+}
+
+type WebWidget {
     id: ID!
     name: String
     resource: String
