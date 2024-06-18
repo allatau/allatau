@@ -26,10 +26,10 @@ type Query {
     taskById(id: ID!): Task
     TaskJobsByTaskId(id: ID!): [TaskJobDetails]!
 
-#    projects: [Project!]!
-#    projectById(id: ID!): Project
-
     orchestratorServerAvailable: ResourceStatus
+
+    microservices: [Microservice!]! @all
+    microservice(id: ID! @eq): Microservice @find @guard
 }
 
 type Mutation {
@@ -54,6 +54,9 @@ type Mutation {
     checkTask(id: ID!): Task
     prepareArchive(id: ID!): String
     abortTask(id: ID!): Task
+
+    createMicroservice(name: String!, resource: String!): Microservice @create
+    deleteMicroservice(id: ID! @eq): Microservice @delete
 }
 
 type UserTokenDetails {
@@ -64,7 +67,6 @@ type TaskJobDetails {
     id: ID!
     json_data: String
 }
-
 
 type User {
     id: ID!
@@ -116,11 +118,13 @@ type ResourceStatus {
     status: ComputingResourceStatus
 }
 
-type ConverterService {
-    type: String
+
+
+type Microservice {
+    id: ID!
+    name: String
+    resource: String
 }
-
-
 
 type Post {
     id: ID!
