@@ -17,6 +17,14 @@
                     <dashboard-outlined />
                     <span>Вычислительные ресурсы</span>
                 </a-menu-item>
+                <a-menu-item key="/web-widgets">
+                    <WindowsOutlined />
+                    <span>Виджеты</span>
+                </a-menu-item>
+                <a-menu-item key="/microservices">
+                    <CloudServerOutlined />
+                    <span>Микросервисы</span>
+                </a-menu-item>
 
 
                 <!-- <a-sub-menu key="/debit-debts">
@@ -92,7 +100,9 @@ import {
     WalletOutlined,
     InfoCircleOutlined,
     CalculatorOutlined,
-    OrderedListOutlined
+    OrderedListOutlined,
+    CloudServerOutlined,
+    WindowsOutlined,
 } from '@ant-design/icons-vue';
 
 export default defineComponent({
@@ -108,6 +118,8 @@ export default defineComponent({
         InfoCircleOutlined,
         CalculatorOutlined,
         OrderedListOutlined,
+        CloudServerOutlined,
+        WindowsOutlined,
     },
     setup() {
         const config = useRuntimeConfig()

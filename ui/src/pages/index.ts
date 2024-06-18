@@ -4,3 +4,5 @@ export * from "./task-details-page";
 export * from "./auth-page";
 export * from "./projects-page";
 export * from "./project-details-page";
+export * from "./microservices-page";
+export * from "./web-widgets-page";
