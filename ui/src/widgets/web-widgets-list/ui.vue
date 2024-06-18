@@ -2,9 +2,9 @@
     <a-table class="list-table" :loading="isLoading" :columns="columns" :data-source="convertedData" bordered>
         <template #bodyCell="{ column, text, record }">
 
-            <!-- <template v-if="column.key === 'name'">
-                <nuxt-link :to="`project-details?id=${record.id}`">{{ record.name }}</nuxt-link>
-            </template> -->
+            <template v-if="column.key === 'name'">
+                <nuxt-link :to="`web-widget-details?id=${record.id}`">{{ record.name }}</nuxt-link>
+            </template>
 
             <template v-if="column.key === 'resource'">
                 <a :href="record.resource">{{ record.resource }}</a> <a-tag style="margin-left: 8px;"
