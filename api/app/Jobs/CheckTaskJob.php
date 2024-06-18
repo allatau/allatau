@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use App\Jobs\DownloadArchiveJob;
 
 // php8 artisan job:dispatch CheckTaskJob 1
 
@@ -50,12 +51,21 @@ class CheckTaskJob implements ShouldQueue
         try {
             $task_array = array_merge($this->task->getAttributes(), ['computing_resource' => $this->computing_resource->getAttributes()]);
 
-            $response = Http::get('http://localhost:7070/tasks/' . $this->task->id);
+            $response = Http::get('http://127.0.0.1:7070/tasks/' . $this->task->id);
+
 
             // Получить ответ
             $responseData = $response->json();
+//            Log::info($responseData);
 
             $this->task->update(['status'=> TaskStatus::from($responseData["status"]), 'jobs' => $responseData["jobs"]  ]);
+
+//            if(TaskStatus::from($responseData["status"]) === TaskStatus::COMPLETED) {
+//                Log::info($responseData["status"]);
+//                Log::info('COMPLETED');
+//                sleep(90);
+//                DownloadArchiveJob::dispatch($this->task->id);
+//            }
 
         } catch(\Illuminate\Http\Client\ConnectionException $e) {
             Log::info('Нет соединения с оркестратором');

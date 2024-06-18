@@ -41,6 +41,10 @@ class TaskJobsByTaskId
 
                 array_push($task_jobs, $job_details);
 
+                if($job_details === "") {
+
+                }
+
 
             } catch(\Illuminate\Http\Client\ConnectionException $e) {
                 Log::info('Нет соединения с оркестратором');

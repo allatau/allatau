@@ -52,6 +52,7 @@ type Mutation {
     dublicateTask(id: ID!): Task
     deleteTask(id: ID!): Task
     checkTask(id: ID!): Task
+    prepareArchive(id: ID!): String
     abortTask(id: ID!): Task
 }
 

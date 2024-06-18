@@ -6,7 +6,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     const token = localStorage.getItem('getUserToken')
 
     const apolloClient = new ApolloClient({
-        uri: "http://localhost:8000/graphql",
+        uri: "http://127.0.0.1:8000/graphql",
         cache: new InMemoryCache(),
         headers: {
             // your headers
