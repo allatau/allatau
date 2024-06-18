@@ -134,6 +134,17 @@ const checkTaskMutation = gqlBuilder.mutation({
   fields: ["id"],
 });
 
+const prepareArchiveMutation = gqlBuilder.mutation({
+  operation: "prepareArchive",
+  variables: {
+    id: {
+      type: "ID",
+      required: true,
+    },
+  },
+  fields: ["id"],
+});
+
 const abortTaskMutation = gqlBuilder.mutation({
   operation: "abortTask",
   variables: {
@@ -166,10 +177,15 @@ export function useComposable() {
   const { mutate: checkTask } = useMutation(
     convStringToGql(checkTaskMutation.query)
   );
+  
+  const { mutate: prepareArchive } = useMutation(
+    convStringToGql(prepareArchiveMutation.query)
+  );
 
   const { mutate: abortTask } = useMutation(
     convStringToGql(abortTaskMutation.query)
   );
+
 
   const fetch = (pollInterval: 10000, project_id: Number = -1) => {
     let params = null;
@@ -220,5 +236,6 @@ export function useComposable() {
     checkTask,
     abortTask,
     dublicate,
+    prepareArchive
   };
 }
