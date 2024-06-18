@@ -53,7 +53,7 @@ export function useComposable() {
     convStringToGql(queryComputingResources.query),
     null,
     {
-      pollInterval: 1000,
+      pollInterval: 10000,
     }
   );
 
