@@ -6,12 +6,10 @@
                 <a-tag>{{ task.status }}</a-tag>
                 <nuxt-link :to="`/project-details?id=${task.project.id}`"><a-tag color="blue">{{ task.project.title
                         }}</a-tag></nuxt-link>
-
             </template>
             <template #extra>
                 <a-button @click="() => check()">Update the task's jobs</a-button>
-                <a
-                    :href="`http://127.0.0.1:8000/public/archives/${task.id}`"><a-button>Download</a-button></a>
+                <a :href="`${config.public.API_URL}/public/archives/${task.id}`"><a-button>Download</a-button></a>
             </template>
 
         </a-page-header><br />
@@ -46,7 +44,7 @@ export default defineComponent({
         ClockCircleOutlined
     },
     setup() {
-
+        const config = useRuntimeConfig();
         const route = useRoute();
 
         const { fetchById, fetchTaskJobsByTaskId, checkTask } =
@@ -121,7 +119,8 @@ export default defineComponent({
             loading,
             jobsDetails,
             pendingInfo,
-            check
+            check,
+            config,
         }
     },
 });

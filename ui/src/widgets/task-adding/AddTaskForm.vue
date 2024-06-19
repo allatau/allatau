@@ -89,6 +89,8 @@ export default defineComponent({
   },
   emits: ["submit"],
   setup(props, { emit }) {
+    const config = useRuntimeConfig();
+
     const { computingResources } = ComputingResourceModel.useComposable()
     const { items: microservices } = MicroserviceModel.useComposable()
     const { items: calculationcases } = CalculationCaseModel.useComposable()
@@ -254,6 +256,7 @@ export default defineComponent({
       isReadyCase,
       handleIframeChange,
       calculationcases,
+
     };
   },
 });

@@ -3,10 +3,8 @@
 export default defineNuxtConfig({
   runtimeConfig: {
     // https://titouan.dev/notes/2023/03/10/basic-auth-middleware-nuxt-3
-    // basicAuth: "admin:northsun",
     public: {
       ...process.env,
-      // GQL_HOST: "http://localhost:8000/graphql",
     },
   },
 

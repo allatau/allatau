@@ -3,8 +3,7 @@
         <template #bodyCell="{ column, text, record }">
 
             <template v-if="column.key === 'file_id'">
-
-                <a :href="`http://127.0.0.1:8000/public/files/${record.file_id}`"><a-button>Download</a-button></a>
+                <a :href="`${config.public.API_URL}/public/files/${record.file_id}`"><a-button>Download</a-button></a>
             </template>
 
             <template v-if="column.key === 'action'">
@@ -65,6 +64,8 @@ export default defineComponent({
         }
     },
     setup(props) {
+        const config = useRuntimeConfig();
+
         const { fetch, deleteItem } =
             CalculationCaseModel.useComposable();
 
@@ -98,6 +99,7 @@ export default defineComponent({
             columns,
             isLoading: loading,
             deleteItemFunc,
+            config,
         };
     },
 });

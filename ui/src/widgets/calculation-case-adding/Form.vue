@@ -7,8 +7,9 @@
     <a-form-item label="Файл" name="file_id" :rules="[{ required: true, message: 'Введите файл!' }]">
       <!-- <a-input v-model:value="formState.file_id" /> -->
 
-      <a-upload v-model:file-list="formState.fileList" name="file" action="http://127.0.0.1:8000/uploading-file-api"
-        @change="handleChange" @drop="handleDrop" :max-count="1">
+      <a-upload v-model:file-list="formState.fileList" name="file"
+        :action="`${config.public.API_URL}/uploading-file-api`" @change="handleChange" @drop="handleDrop"
+        :max-count="1">
         <a-button>
           <upload-outlined></upload-outlined>
           Загрузить архив
@@ -31,6 +32,7 @@ export default defineComponent({
   },
   emits: ["submit"],
   setup(props, { emit }) {
+    const config = useRuntimeConfig();
 
     const formRef = ref(null);
 
@@ -48,7 +50,7 @@ export default defineComponent({
 
       const data = {
         ...values,
-        filePath: `http://127.0.0.1:8000/public/files/${file_id}`
+        filePath: `http://127.0.0.1:8000/public/files/${formState.file_id}`
       };
       console.log("Success:", data);
       emit("submit", data);
@@ -115,6 +117,7 @@ export default defineComponent({
       resetFields,
       handleChange,
       handleDrop,
+      config,
     };
   },
 });
