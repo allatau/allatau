@@ -50,7 +50,7 @@ export default defineComponent({
 
       const data = {
         ...values,
-        filePath: `http://127.0.0.1:8000/public/files/${formState.file_id}`
+        filePath: `${config.public.API_URL}/public/files/${formState.file_id}`
       };
       console.log("Success:", data);
       emit("submit", data);
