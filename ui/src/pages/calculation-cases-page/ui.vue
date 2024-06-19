@@ -1,6 +1,6 @@
 <template>
     <div class="page-wrapper">
-        <WebwidgetAdding /> <br />
+        <CalculationCaseAdding /> <br />
         <CalculationCasesList />
     </div>
 </template>
@@ -8,13 +8,13 @@
 import { defineComponent, computed } from "vue";
 
 
-import { WebwidgetAdding } from "~/src/widgets/web-widget-adding";
+import { CalculationCaseAdding } from "~/src/widgets/calculation-case-adding";
 import { CalculationCasesList } from "~/src/widgets/calculation-cases-list";
 
 export default defineComponent({
     components: {
         CalculationCasesList,
-        WebwidgetAdding,
+        CalculationCaseAdding,
     },
     setup() { },
 });
