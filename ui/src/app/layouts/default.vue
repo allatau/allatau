@@ -55,7 +55,7 @@
                         процессов: <a-tag color="red">{{ resourceStatus }}</a-tag></p>
                 </div>
                 <div style="display: flex; margin-top: 16px;">
-                    <a-button>
+                    <a-button v-if="userViewer">
                         <template #icon>
                             <UserOutlined />
                         </template>
@@ -141,8 +141,15 @@ export default defineComponent({
         const { result, loading } = fetch(10000)
 
         const userViewer = computed(() => {
+            let user = null
 
-            return result.value.userViewer
+            try {
+                user = result.value.userViewer
+            } catch (error) {
+                console.error(error);
+            }
+
+            return user
         });
 
         const collapsed = ref(false)
