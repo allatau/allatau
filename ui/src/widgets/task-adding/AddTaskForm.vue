@@ -1,5 +1,4 @@
 <template>
-  {{ formState }}
   <a-form ref="formRef" :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
     autocomplete="off" @finish="onFinish" @finishFailed="onFinishFailed" style="width: 100%;">
     <a-form-item label="Название" name="name" :rules="[{ required: true, message: 'Введите наименование задачи!' }]">
