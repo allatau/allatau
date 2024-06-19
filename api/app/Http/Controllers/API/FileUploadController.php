@@ -40,7 +40,8 @@ class FileUploadController extends Controller
                 "message" => "File successfully uploaded",
                 "file" => $file,
                 "name" => $name,
-                "path" => $host .'/'. $path
+                "path" => $host .'/'. $path,
+                "id" => $id,
             ]);
 
         }

@@ -60,15 +60,17 @@ export default defineComponent({
 
         const onSubmit = async (values) => {
             console.log("values", values);
-            createTask({
+            const p = {
                 name: values.name,
                 computing_resource_id: values.computingClusterId,
                 script: values.script,
-                computational_model_resource: values.filePath,
+                computational_model_resource: `http://127.0.0.1:8000/public/files/${values.file}`,
                 converter_service: JSON.stringify(values.converterService),
                 numerical_model: values.numericalModel,
                 project_id: values.projectId
-            });
+            }
+            console.log("p", p);
+            createTask(p);
             closeModal();
         };
 

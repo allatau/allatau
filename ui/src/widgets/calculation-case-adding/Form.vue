@@ -4,9 +4,16 @@
     <a-form-item label="Название" name="name" :rules="[{ required: true, message: 'Введите наименование!' }]">
       <a-input v-model:value="formState.name" />
     </a-form-item>
-    <a-form-item label="Файл" name="file_id"
-      :rules="[{ required: true, message: 'Введите файл!' }]">
-      <a-input v-model:value="formState.file_id" />
+    <a-form-item label="Файл" name="file_id" :rules="[{ required: true, message: 'Введите файл!' }]">
+      <!-- <a-input v-model:value="formState.file_id" /> -->
+
+      <a-upload v-model:file-list="formState.fileList" name="file" action="http://127.0.0.1:8000/uploading-file-api"
+        @change="handleChange" @drop="handleDrop" :max-count="1">
+        <a-button>
+          <upload-outlined></upload-outlined>
+          Загрузить архив
+        </a-button>
+      </a-upload>
 
     </a-form-item>
   </a-form>
@@ -30,6 +37,7 @@ export default defineComponent({
     const formState = reactive({
       name: "",
       file_id: "",
+      fileList: []
     });
 
 
@@ -40,6 +48,7 @@ export default defineComponent({
 
       const data = {
         ...values,
+        filePath: `http://127.0.0.1:8000/public/files/${file_id}`
       };
       console.log("Success:", data);
       emit("submit", data);
@@ -70,6 +79,27 @@ export default defineComponent({
       console.log("Failed:", errorInfo);
     };
 
+    const handleChange = (info) => {
+      if (info.file.status !== "uploading") {
+        // console.log("info.file", info.file.xhr.response);
+      }
+      if (info.file.status === "done") {
+        message.success(`${info.file.name} file uploaded successfully`);
+        console.log("info.file", info.file);
+        const xhr = info.file.xhr;
+        console.log("xhr response", JSON.parse(xhr.response));
+        const xhrResponse = JSON.parse(xhr.response);
+        console.log("xhrResponse.path", xhrResponse.path);
+        formState.file_id = xhrResponse.id;
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    };
+
+    const handleDrop = (file) => {
+      console.log("file", file);
+    };
+
 
     onMounted(() => {
 
@@ -83,6 +113,8 @@ export default defineComponent({
       formRef,
       submitForm,
       resetFields,
+      handleChange,
+      handleDrop,
     };
   },
 });

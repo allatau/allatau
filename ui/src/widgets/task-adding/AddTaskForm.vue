@@ -26,13 +26,18 @@
 
     <a-form-item v-if="isReadyCase === true" label="Расчетный кейс" name="file"
       :rules="[{ required: false, message: 'Загрузите расчетный кейс' }]">
-      <a-upload v-model:file-list="formState.file" name="file" action="http://127.0.0.1:8000/uploading-file-api"
+      <!-- <a-upload v-model:file-list="formState.file" name="file" action="http://127.0.0.1:8000/uploading-file-api"
         @change="handleChange" @drop="handleDrop" :max-count="1">
         <a-button>
           <upload-outlined></upload-outlined>
           Загрузить архив
         </a-button>
-      </a-upload>
+      </a-upload> -->
+      <a-select v-model:value="formState.file" placeholder="Выберите расчетный кейс">
+        <a-select-option v-for="calculationCase in calculationcases" :value="calculationCase.file.id"
+          v-bind:key="calculationCase.id">{{
+            calculationCase.name }}</a-select-option>
+      </a-select>
     </a-form-item>
 
     <a-form-item v-if="isReadyCase === false" label="Сервис для формирования расчетного кейса" name="converterService"
@@ -66,6 +71,7 @@ import { message } from "ant-design-vue";
 
 import { ComputingResourceModel } from "~/src/entities/computing-resource";
 import { MicroserviceModel } from "~/src/entities/microservice";
+import { CalculationCaseModel } from "~/src/entities/calculation-case";
 
 import IframeManagement from "./IframeManagement.vue";
 
@@ -85,6 +91,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const { computingResources } = ComputingResourceModel.useComposable()
     const { items: microservices } = MicroserviceModel.useComposable()
+    const { items: calculationcases } = CalculationCaseModel.useComposable()
 
     const computingresources = computed(() => {
       return computingResources.value.map((payloads) => {
@@ -102,7 +109,7 @@ export default defineComponent({
 
     const formState = reactive({
       name: "",
-      file: [],
+      file: "",
       filePath: "",
       computingClusterId: undefined,
       numericalModel: null,
@@ -174,26 +181,26 @@ export default defineComponent({
 
     const uploading = ref(false);
 
-    const handleChange = (info) => {
-      if (info.file.status !== "uploading") {
-        // console.log("info.file", info.file.xhr.response);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-        console.log("info.file", info.file);
-        const xhr = info.file.xhr;
-        console.log("xhr response", JSON.parse(xhr.response));
-        const xhrResponse = JSON.parse(xhr.response);
-        console.log("xhrResponse.path", xhrResponse.path);
-        formState.filePath = xhrResponse.path;
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    };
+    // const handleChange = (info) => {
+    //   if (info.file.status !== "uploading") {
+    //     // console.log("info.file", info.file.xhr.response);
+    //   }
+    //   if (info.file.status === "done") {
+    //     message.success(`${info.file.name} file uploaded successfully`);
+    //     console.log("info.file", info.file);
+    //     const xhr = info.file.xhr;
+    //     console.log("xhr response", JSON.parse(xhr.response));
+    //     const xhrResponse = JSON.parse(xhr.response);
+    //     console.log("xhrResponse.path", xhrResponse.path);
+    //     formState.filePath = xhrResponse.path;
+    //   } else if (info.file.status === "error") {
+    //     message.error(`${info.file.name} file upload failed.`);
+    //   }
+    // };
 
-    const handleDrop = (file) => {
-      console.log("file", file);
-    };
+    // const handleDrop = (file) => {
+    //   console.log("file", file);
+    // };
 
     onMounted(() => {
       window.addEventListener(
@@ -242,10 +249,11 @@ export default defineComponent({
       microservices,
       file,
       uploading,
-      handleChange,
-      handleDrop,
+      // handleChange,
+      // handleDrop,
       isReadyCase,
       handleIframeChange,
+      calculationcases,
     };
   },
 });
