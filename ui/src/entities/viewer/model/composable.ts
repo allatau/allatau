@@ -31,12 +31,21 @@ const loginMutation = gqlBuilder.mutation({
   fields: ["token"],
 });
 
+const logoutMutation = gqlBuilder.mutation({
+  operation: "logout",
+  fields: ["email"],
+});
+
 
 /* GraphQL with VueApollo */
 export function useComposable() {
 
   const { mutate: login } = useMutation(
     convStringToGql(loginMutation.query)
+  );
+
+  const { mutate: logout } = useMutation(
+    convStringToGql(logoutMutation.query)
   );
 
   const fetch = (pollInterval: 10000) => {
@@ -50,7 +59,8 @@ export function useComposable() {
     fetch,
 
     // mutations
-    login
+    login,
+    logout
 
   };
 }

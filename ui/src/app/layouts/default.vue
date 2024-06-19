@@ -146,7 +146,6 @@ export default defineComponent({
         })
 
         const onLogoutClick = async (values: any) => {
-
             await logout()
             navigateTo("/auth");
         };
@@ -158,7 +157,7 @@ export default defineComponent({
             handleClick,
             onLogoutClick,
             resourceStatus,
-            ComputingResourceStatus
+            ComputingResourceStatus,
         }
     },
 });

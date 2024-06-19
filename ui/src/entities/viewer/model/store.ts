@@ -7,7 +7,7 @@ import axios from "axios"
 
 
 export const useStore = defineStore("viewer", () => {
-  const { login:loginComp } = useComposable();
+  const { logout: logoutComp, login:loginComp } = useComposable();
 
   const assignGetUserAuthorized = () => {
     let temp = false;
@@ -68,9 +68,12 @@ export const useStore = defineStore("viewer", () => {
 
   const logout = async (): Promise<void> => {
     try {
+      await logoutComp()
       getUserAuthorized.value = false;
       localStorage.removeItem("getUserAuthorized");
-    } catch (error) {}
+    } catch (error) {
+      console.log("error", error)
+    }
   };
 
   return {
