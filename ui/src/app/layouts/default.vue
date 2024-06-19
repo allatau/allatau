@@ -54,19 +54,22 @@
                         оркестрации
                         процессов: <a-tag color="red">{{ resourceStatus }}</a-tag></p>
                 </div>
-                <div style="display: flex; ">
-                    <a-dropdown>
-                        <a class="ant-dropdown-link">
-                            <a-button @click="() => onLogoutClick()">
-                                <template #icon>
-                                    <UserOutlined />
-                                </template>
-                                Выйти
-                            </a-button>
-                            <DownOutlined />
-                        </a>
+                <div style="display: flex; margin-top: 16px;">
+                    <a-button>
+                        <template #icon>
+                            <UserOutlined />
+                        </template>
+                        {{ userViewer.email }}
+                    </a-button>
+                    <DownOutlined />
 
-                    </a-dropdown>
+
+                    <a-button style="margin-left: 8px;" @click="() => onLogoutClick()">
+                        Выйти
+                    </a-button>
+                    <DownOutlined />
+
+
                 </div>
             </a-layout-header>
             <a-layout-content style="margin: 0 16px">
@@ -130,9 +133,17 @@ export default defineComponent({
     setup() {
         const config = useRuntimeConfig()
         const { logout } = ViewerModel.useStore();
+        const { fetch } = ViewerModel.useComposable()
         const { orchestratorServerAvailable, isLoading, error } = OrchestratorServerAvailableModel.useComposable();
 
         const router = useRouter()
+
+        const { result, loading } = fetch(10000)
+
+        const userViewer = computed(() => {
+
+            return result.value.userViewer
+        });
 
         const collapsed = ref(false)
         const selectedKeys = ref(['catalog'])
@@ -158,6 +169,7 @@ export default defineComponent({
             onLogoutClick,
             resourceStatus,
             ComputingResourceStatus,
+            userViewer,
         }
     },
 });
