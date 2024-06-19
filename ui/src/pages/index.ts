@@ -7,3 +7,4 @@ export * from "./project-details-page";
 export * from "./microservices-page";
 export * from "./web-widgets-page";
 export * from "./web-widget-details-page";
+export * from "./calculation-cases-page";

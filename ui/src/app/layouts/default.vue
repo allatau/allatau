@@ -25,6 +25,10 @@
                     <CloudServerOutlined />
                     <span>Микросервисы</span>
                 </a-menu-item>
+                <a-menu-item key="/calculation-cases">
+                    <FileZipOutlined />
+                    <span>Расчетные кейсы</span>
+                </a-menu-item>
 
 
                 <!-- <a-sub-menu key="/debit-debts">
@@ -103,6 +107,7 @@ import {
     OrderedListOutlined,
     CloudServerOutlined,
     WindowsOutlined,
+    FileZipOutlined,
 } from '@ant-design/icons-vue';
 
 export default defineComponent({
@@ -120,6 +125,7 @@ export default defineComponent({
         OrderedListOutlined,
         CloudServerOutlined,
         WindowsOutlined,
+        FileZipOutlined,
     },
     setup() {
         const config = useRuntimeConfig()
