@@ -45,8 +45,15 @@ export default defineComponent({
             password: ''
         });
         const onFinish = async (values: any) => {
+
+            // await auth.signIn({ ...values });
             await login(formState.email, formState.password)
-            navigateTo("/");
+            // navigateTo("/");
+
+            reloadNuxtApp({
+                path: "/",
+                ttl: 100, // default 10000
+            });
         };
 
         const onFinishFailed = (errorInfo: any) => {
