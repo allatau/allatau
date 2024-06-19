@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\API\FileUploadController;
 use App\Http\Controllers\ArchiveFileController;
+use App\Http\Controllers\AllFileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,3 +25,4 @@ Route::get('/', function () {
 Route::get('/public/cases/{filename}', [FileController::class, 'getfile']);
 Route::get('/public/archives/{filename}', [ArchiveFileController::class, 'getfile']);
 Route::post('/uploading-file-api', [FileUploadController::class, 'upload']);
+Route::get('/public/files/{guid}', [AllFileController::class, 'getfile']);

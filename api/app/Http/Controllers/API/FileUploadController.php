@@ -23,15 +23,17 @@ class FileUploadController extends Controller
 
 
         if ($file = $request->file('file')) {
+            $file_entity = new File();
+            $id = Str::uuid()->toString();
             $name = $file->getClientOriginalName();
-            $path = $file->storeAs('public/cases', Str::uuid()->toString() . '_' . $name);
+            $path = $file->storeAs('public/cases', $id . '_' . $name);
 
 
             //store your file into directory and db
-            $save = new File();
-            $save->name = $name;
-            $save->path= $path;
-            $save->save();
+            $file_entity->id = $id;
+            $file_entity->name = $name;
+            $file_entity->path= $path;
+            $file_entity->save();
 
             return response()->json([
                 "success" => true,

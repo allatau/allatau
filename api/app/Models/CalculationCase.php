@@ -4,15 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class File extends Model
+class CalculationCase extends Model
 {
     use HasFactory;
     use \App\Http\Traits\UsesUuid;
 
     protected $fillable = [
         'name',
-        'path',
     ];
 
+    public function file(): BelongsTo
+    {
+        return $this->belongsTo(File::class);
+    }
 }
