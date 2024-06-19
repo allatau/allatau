@@ -11,10 +11,6 @@ export const useStore = defineStore("viewer", () => {
 
   const assignGetUserAuthorized = () => {
     let temp = false;
-    console.log(
-      "localStorage.getItem",
-      localStorage.getItem("getUserAuthorized")
-    );
     try {
       const localGetUserAuthorized: any =
         localStorage.getItem("getUserAuthorized");
@@ -26,10 +22,7 @@ export const useStore = defineStore("viewer", () => {
 
   const assignGetUserToken = () => {
     let temp = "";
-    console.log(
-      "localStorage.getItem",
-      localStorage.getItem("getUserToken")
-    );
+
     try {
       const localGetUserToken: any =
         localStorage.getItem("getUserToken");
@@ -43,27 +36,16 @@ export const useStore = defineStore("viewer", () => {
   const token = ref(assignGetUserToken());
 
   const login = async (email: string, password: string): Promise<void> => {
-    let loginParams = JSON.stringify({
-      "email": "dealenx@gmail.com",
-      "password": "allatau"
-    });
+    console.log(1)
+    let loginParams = {
+      email: email,
+      password: password
+    }
 
     try {
+      const data: any = await loginComp(loginParams as Object);
 
-      // loginComp({email: "dealenx@gmail.com",password: "allatau"});
-      const loginResponse  = await axios.request({
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: 'http://localhost:8000/api/login',
-        headers: { 
-          'Content-Type': 'application/json'
-        },
-        data : loginParams
-      } as any)
-
-      console.log("loginResponse.data.data.token", loginResponse.data.data.token)
-
-      token.value = loginResponse.data.data.token
+      token.value = data.data.login.token as any
 
       getUserAuthorized.value = true;
   
@@ -72,18 +54,14 @@ export const useStore = defineStore("viewer", () => {
         String(getUserAuthorized.value)
       );
       
-
+      console.log("token.value", token.value);
+      
       localStorage.setItem(
         "getUserToken",
         String(token.value)
       );
-
-
-      console.log(
-        "localStorage.getItem",
-        localStorage.getItem("getUserAuthorized")
-      );
     } catch (error) {
+      console.log("error", error)
       getUserAuthorized.value = false;
     }
   };
@@ -91,12 +69,7 @@ export const useStore = defineStore("viewer", () => {
   const logout = async (): Promise<void> => {
     try {
       getUserAuthorized.value = false;
-      console.log("getUserAuthorized.value", getUserAuthorized.value);
       localStorage.removeItem("getUserAuthorized");
-      console.log(
-        "localStorage.getItem",
-        localStorage.getItem("getUserAuthorized")
-      );
     } catch (error) {}
   };
 

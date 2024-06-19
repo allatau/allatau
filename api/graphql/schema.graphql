@@ -50,7 +50,7 @@ type Mutation {
     updateUser(id: ID!, name: String): User @update
     deleteUser(id: ID!): User @delete
 
-    login(email: String, password: String): UserTokenDetails
+    login(email: String!, password: String!): UserTokenDetails
     logout: User @guard
 
     createComputingResource(name: String!, port: String!, host: String!, login: String!, password: String!): ComputingResource
