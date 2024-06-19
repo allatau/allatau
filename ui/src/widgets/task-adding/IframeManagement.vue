@@ -6,7 +6,13 @@
                     required: true,
                     message: 'Url required',
                 }">
-                    <a-input v-model:value="item.url" placeholder="Iframe url" />
+                    <!-- <a-input v-model:value="item.url" placeholder="Iframe url" /> -->
+                    <a-select style="min-width: 300px" v-model:value="item.url"
+                        placeholder="Выберите автономный виджет">
+                        <a-select-option v-for="item in webWidgets" :value="item.resource" :placeholder="item.name"
+                            v-bind:key="item.id">{{
+                                item.name }}</a-select-option>
+                    </a-select>
                 </a-form-item>
 
                 <SaveOutlined @click="saveIframe(item)" />
@@ -38,6 +44,8 @@
 import { MinusCircleOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons-vue';
 import { defineComponent, onMounted, reactive, ref, toRaw } from 'vue';
 
+import { WebWidgetModel } from "~/src/entities/web-widget";
+
 import { useLoaderState } from "~/src/shared/lib"
 
 export default defineComponent({
@@ -49,6 +57,8 @@ export default defineComponent({
 
     setup(props, { emit }) {
         const loaderState = ref(useLoaderState());
+
+        const { items: webWidgets } = WebWidgetModel.useComposable()
 
         let initIframes = [];
         if (localStorage.getItem('iframes')) {
@@ -119,6 +129,7 @@ export default defineComponent({
             addIframe,
             saveIframe,
             loaderState,
+            webWidgets,
         };
     },
 
