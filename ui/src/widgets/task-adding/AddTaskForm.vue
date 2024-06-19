@@ -1,4 +1,5 @@
 <template>
+  {{ formState }}
   <a-form ref="formRef" :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
     autocomplete="off" @finish="onFinish" @finishFailed="onFinishFailed" style="width: 100%;">
     <a-form-item label="Название" name="name" :rules="[{ required: true, message: 'Введите наименование задачи!' }]">
@@ -33,7 +34,7 @@
           Загрузить архив
         </a-button>
       </a-upload> -->
-      <a-select v-model:value="formState.file" placeholder="Выберите расчетный кейс">
+      <a-select v-model:value="formState.file_id" placeholder="Выберите расчетный кейс">
         <a-select-option v-for="calculationCase in calculationcases" :value="calculationCase.file.id"
           v-bind:key="calculationCase.id">{{
             calculationCase.name }}</a-select-option>
@@ -111,11 +112,11 @@ export default defineComponent({
 
     const formState = reactive({
       name: "",
-      file: "",
+      file_id: "",
       filePath: "",
       computingClusterId: undefined,
       numericalModel: null,
-      converterService: "https://microservice-zero.vercel.app",
+      converterService: null,
       projectId: props.projectId,
       script:
         "#!/bin/bash\nsource /opt/openfoam9/etc/bashrc\nblockMesh\nicoFoam",
@@ -123,15 +124,6 @@ export default defineComponent({
     // https://standalone-widget-cavity.vercel.app
 
     const onFinish = (values) => {
-      let path = ""
-
-      console.log("values", values)
-
-      try {
-        path = values?.file[0]?.response?.path
-      } catch (error) {
-
-      }
 
       let converterService = null
 
@@ -144,17 +136,32 @@ export default defineComponent({
         }
 
       } catch (error) {
-
+        console.error(error);
       }
 
       const data = {
         ...values,
-        filePath: path,
+        filePath: formState.filePath,
         converterService
       };
       console.log("Success:", data);
       emit("submit", data);
     };
+
+    watch(isReadyCase, (newValue, oldValue) => {
+      if (newValue === true) {
+        formState.converterService = null
+      } else {
+        formState.file_id = ""
+        formState.filePath = ""
+      }
+    })
+
+    watch(formState, (newValue, oldValue) => {
+      if (formState.file_id !== "") {
+        formState.filePath = `${config.public.API_URL}/public/files/${formState.file_id}`
+      }
+    })
 
     const submitForm = () => {
       // formRef.value.validate();
@@ -183,27 +190,6 @@ export default defineComponent({
 
     const uploading = ref(false);
 
-    // const handleChange = (info) => {
-    //   if (info.file.status !== "uploading") {
-    //     // console.log("info.file", info.file.xhr.response);
-    //   }
-    //   if (info.file.status === "done") {
-    //     message.success(`${info.file.name} file uploaded successfully`);
-    //     console.log("info.file", info.file);
-    //     const xhr = info.file.xhr;
-    //     console.log("xhr response", JSON.parse(xhr.response));
-    //     const xhrResponse = JSON.parse(xhr.response);
-    //     console.log("xhrResponse.path", xhrResponse.path);
-    //     formState.filePath = xhrResponse.path;
-    //   } else if (info.file.status === "error") {
-    //     message.error(`${info.file.name} file upload failed.`);
-    //   }
-    // };
-
-    // const handleDrop = (file) => {
-    //   console.log("file", file);
-    // };
-
     onMounted(() => {
       window.addEventListener(
         "message",
@@ -228,7 +214,7 @@ export default defineComponent({
       try {
         endpoint = data[0].url
       } catch (error) {
-
+        console.error(error);
       }
 
       if (endpoint !== "") {

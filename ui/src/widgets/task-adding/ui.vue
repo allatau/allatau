@@ -65,7 +65,7 @@ export default defineComponent({
                 name: values.name,
                 computing_resource_id: values.computingClusterId,
                 script: values.script,
-                computational_model_resource: `${config.public.API_URL}/public/files/${values.file}`,
+                computational_model_resource: values.filePath,
                 converter_service: JSON.stringify(values.converterService),
                 numerical_model: values.numericalModel,
                 project_id: values.projectId
