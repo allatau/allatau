@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Log;
 
 class DownloadArchiveJob implements ShouldQueue
 {
-
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     // php artisan job:dispatch DownloadArchiveJob <guid>
     protected Task $task;
@@ -40,7 +39,6 @@ class DownloadArchiveJob implements ShouldQueue
      */
     public function handle()
     {
-        Sftp::download($this->computing_resource->host, $this->computing_resource->login, $this->computing_resource->password, '/home/'.$this->computing_resource->login.'/calculations/'.$this->task->id.'/archive.tar.gz', 'storage/app/public/archives/'.$this->task->id.'.tar.gz', $port = $this->computing_resource->port, $timeout = 10);
-
+        Sftp::download($this->computing_resource->host, $this->computing_resource->login, $this->computing_resource->password, '/home/'.$this->computing_resource->login.'/calculations/'.$this->task->id.'/archive.tar.gz', storage_path('app/public/archives/'.$this->task->id.'.tar.gz'), $port = $this->computing_resource->port, $timeout = 10);
     }
 }

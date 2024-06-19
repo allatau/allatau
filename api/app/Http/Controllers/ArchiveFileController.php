@@ -16,8 +16,8 @@ class ArchiveFileController extends Controller
 {
     function getFile($guid){
 
-//        DownloadArchiveJob::dispatch($guid);
-//        sleep(10);
+        DownloadArchiveJob::dispatch($guid);
+        //sleep(10);
         return Storage::download('public/archives/'.$guid.".tar.gz");
     }
 
