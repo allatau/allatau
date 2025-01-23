@@ -8,3 +8,4 @@ export * from "./microservices-page";
 export * from "./web-widgets-page";
 export * from "./web-widget-details-page";
 export * from "./calculation-cases-page";
+export * from "./calculation-case-generation-via-services-page";

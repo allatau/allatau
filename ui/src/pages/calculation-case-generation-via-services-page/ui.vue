@@ -1,12 +1,6 @@
 <template>
     <div class="page-wrapper">
-
-        <a-flex wrap="wrap" gap="small">
-            <CalculationCaseAdding />
-            <nuxt-link :to="`calculation-cases/generate-via-services`">
-                <a-button type="primary">Сгенерировать с помощью внешних сервисов</a-button>
-            </nuxt-link>
-        </a-flex>
+        <CalculationCaseAdding /> <br />
         <CalculationCasesList />
     </div>
 </template>
