@@ -37,3 +37,12 @@ Problem 1 - phpunit/phpunit[9.6.0, ..., 9.6.x-dev] require ext-dom \* -> it is m
 
 sudo apt install php-xml
 sudo apt-get install php8.1-xml
+
+# Problem with zip extension during composer install
+
+При выполнении composer install может возникнуть ошибка:
+"Failed to download nikic/php-parser from dist: The zip extension and unzip/7z commands are both missing, skipping."
+
+Для решения установите zip расширение:
+
+sudo apt install php8.1-zip

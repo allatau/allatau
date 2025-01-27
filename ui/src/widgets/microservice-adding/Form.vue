@@ -6,6 +6,7 @@
     </a-form-item>
     <a-form-item label="Ссылка на ресурс" name="resource"
       :rules="[{ required: true, message: 'Введите ссылку на ресурс!' }]">
+      <p style="margin-left: 8px">Например, https://microservice-zero.vercel.app</p>
       <a-input v-model:value="formState.resource" />
     </a-form-item>
   </a-form>
