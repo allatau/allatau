@@ -76,6 +76,8 @@ type Mutation {
         computational_model_resource: String
         numerical_model: String
         converter_service: String
+        calculation_case_id: ID
+        meta_values: String
     ): Task
     startTask(id: ID!): Task
     dublicateTask(id: ID!): Task
@@ -152,6 +154,8 @@ type Task {
     extra: String
     numerical_model: String
     converter_service: String
+    calculation_case: CalculationCase @belongsTo
+    meta_values: String
 }
 
 type ResourceStatus {

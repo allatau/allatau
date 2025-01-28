@@ -28,6 +28,8 @@ class CreateTasksTable extends Migration
             $table->longText('extra');
             $table->longText('numerical_model');
             $table->longText('converter_service');
+            $table->uuid('calculation_case_id')->nullable();
+            $table->longText('meta_values')->nullable();
         });
     }
 
