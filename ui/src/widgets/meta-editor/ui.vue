@@ -1,20 +1,32 @@
 <template>
     <a-form ref="formRef" name="meta_editor_form" :model="dynamicValidateForm" v-bind="formItemLayoutWithOutLabel">
-        <a-form-item v-for="(field, index) in dynamicValidateForm.fields" :key="field.key"
-            v-bind="index === 0 ? formItemLayout : {}" :label="index === 0 ? 'Метаданные' : ''"
-            :name="['fields', index, 'value']" :rules="{
-                required: true,
-                message: 'Поле не может быть пустым',
-                trigger: 'change',
-            }">
-            <a-input v-model:value="field.value" placeholder="Введите значение" style="width: 60%; margin-right: 8px" />
-            <MinusCircleOutlined v-if="dynamicValidateForm.fields.length > 1" class="dynamic-delete-button"
-                @click="removeField(field)" />
-        </a-form-item>
+        <div v-for="(field, index) in dynamicValidateForm.fields" :key="field.key">
+            <a-form-item v-bind="index === 0 ? formItemLayout : {}" :label="index === 0 ? 'Метаданные' : ''">
+                <div class="field-label">Путь к файлу</div>
+                <a-input v-model:value="field.filepath" placeholder="Путь к файлу"
+                    style="width: 100%; margin-bottom: 8px" />
+                <div style="display: flex; gap: 8px; margin-bottom: 8px">
+                    <div style="width: 50%">
+                        <div class="field-label">Позиция</div>
+                        <a-input-number v-model:value="field.pos" placeholder="Позиция" style="width: 100%" />
+                    </div>
+                    <div style="width: 50%">
+                        <div class="field-label">Длина</div>
+                        <a-input-number v-model:value="field.length" placeholder="Длина" style="width: 100%" />
+                    </div>
+                </div>
+                <div class="field-label">Название</div>
+                <a-input v-model:value="field.name" placeholder="Название" style="width: 100%; margin-bottom: 8px" />
+                <div class="field-label">Описание</div>
+                <a-textarea v-model:value="field.description" placeholder="Описание" style="width: 100%" />
+                <MinusCircleOutlined v-if="dynamicValidateForm.fields.length > 1" class="dynamic-delete-button"
+                    @click="removeField(field)" />
+            </a-form-item>
+        </div>
         <a-form-item v-bind="formItemLayoutWithOutLabel">
             <a-button type="dashed" style="width: 60%" @click="addField">
                 <PlusOutlined />
-                Добавить поле
+                Добавить запись
             </a-button>
         </a-form-item>
         <a-form-item v-bind="formItemLayoutWithOutLabel">
@@ -30,7 +42,11 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import type { FormInstance } from 'ant-design-vue';
 
 interface Field {
-    value: string;
+    filepath: string;
+    pos: number;
+    length: number;
+    name: string;
+    description: string;
     key: number;
 }
 
@@ -69,10 +85,13 @@ const submitForm = () => {
     formRef.value
         ?.validate()
         .then(() => {
-            const result: { [key: string]: string } = {};
-            dynamicValidateForm.fields.forEach((field, index) => {
-                result[`field${index + 1}`] = field.value;
-            });
+            const result = dynamicValidateForm.fields.map(field => ({
+                filepath: field.filepath,
+                pos: field.pos,
+                length: field.length,
+                name: field.name,
+                description: field.description
+            }));
             emit('save', result);
         })
         .catch(error => {
@@ -93,16 +112,20 @@ const removeField = (item: Field) => {
 
 const addField = () => {
     dynamicValidateForm.fields.push({
-        value: '',
+        filepath: '',
+        pos: 0,
+        length: 0,
+        name: '',
+        description: '',
         key: Date.now(),
     });
 };
 
 onMounted(() => {
-    if (Object.keys(props.initialMeta).length) {
-        Object.entries(props.initialMeta).forEach(([_, value]) => {
+    if (Array.isArray(props.initialMeta) && props.initialMeta.length) {
+        props.initialMeta.forEach((meta) => {
             dynamicValidateForm.fields.push({
-                value: String(value),
+                ...meta,
                 key: Date.now(),
             });
         });
