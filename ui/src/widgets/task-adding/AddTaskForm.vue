@@ -59,9 +59,9 @@
     </a-form-item>
 
     <a-form-item v-if="isReadyCase === true && formState.meta" label="Параметры расчетного кейса">
-      <dynamic-form :meta-fields="parsedMeta" @submit="handleMetaSubmit" />
+      <dynamic-form :meta-fields="parsedMeta" v-model="formState.metaValues" />
     </a-form-item>
-
+    {{ formState }}
     <!-- <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
       <a-button type="primary" html-type="submit">Submit</a-button>
     </a-form-item> -->
@@ -125,6 +125,7 @@ export default defineComponent({
       meta: null,
       script:
         "#!/bin/bash\nsource /opt/openfoam9/etc/bashrc\nblockMesh\nicoFoam",
+      metaValues: {},
     });
     // https://standalone-widget-cavity.vercel.app
 
@@ -136,10 +137,6 @@ export default defineComponent({
         return [];
       }
     });
-
-    const handleMetaSubmit = (metaValues) => {
-      formState.metaValues = metaValues;
-    };
 
     const onFinish = (values) => {
 
@@ -285,7 +282,6 @@ export default defineComponent({
       handleIframeChange,
       calculationcases,
       parsedMeta,
-      handleMetaSubmit
     };
   },
 });
