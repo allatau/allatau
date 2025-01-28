@@ -13,10 +13,14 @@
             </a-descriptions>
             <br />
 
-            <h2>Мета-данные</h2>
-            <a-spin :spinning="loading">
-                <meta-editor :id="route.params.id" :initial-meta="metaData" @save="handleMetaSave" />
-            </a-spin>
+            <a-tabs v-model:activeKey="activeTab">
+                <a-tab-pane key="meta" tab="Мета-данные">
+                    <meta-editor :id="route.params.id" :initial-meta="metaData" @save="handleMetaSave" />
+                </a-tab-pane>
+                <a-tab-pane key="form" tab="Форма">
+                    <dynamic-form :meta-fields="metaData" @submit="handleFormSubmit" />
+                </a-tab-pane>
+            </a-tabs>
         </a-spin>
     </div>
 </template>
@@ -27,15 +31,18 @@ import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
 import { CalculationCaseModel } from "~/src/entities/calculation-case";
 import MetaEditor from '~/src/widgets/meta-editor/ui.vue';
+import DynamicForm from '~/src/widgets/dynamic-form/ui.vue';
 
 export default defineComponent({
     components: {
-        MetaEditor
+        MetaEditor,
+        DynamicForm
     },
     setup() {
         const config = useRuntimeConfig();
         const route = useRoute();
         const metaData = ref([]);
+        const activeTab = ref('meta');
 
         const { fetchOne, update } = CalculationCaseModel.useComposable();
         const { result: data, loading } = fetchOne(route.params.id);
@@ -69,13 +76,20 @@ export default defineComponent({
             }
         };
 
+        const handleFormSubmit = (formData) => {
+            console.log('Данные формы:', formData);
+            message.success('Форма отправлена');
+        };
+
         return {
             data,
             loading,
             config,
             metaData,
             handleMetaSave,
-            route
+            route,
+            activeTab,
+            handleFormSubmit
         };
     },
 });
