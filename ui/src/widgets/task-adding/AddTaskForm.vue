@@ -126,6 +126,7 @@ export default defineComponent({
       script:
         "#!/bin/bash\nsource /opt/openfoam9/etc/bashrc\nblockMesh\nicoFoam",
       metaValues: {},
+      calculation_case_id: null,
     });
     // https://standalone-widget-cavity.vercel.app
 
@@ -185,17 +186,22 @@ export default defineComponent({
         try {
           const selectedCase = calculationcases.value.find(c => c.file.id === newFileId);
 
-          if (selectedCase?.meta) {
-            formState.meta = selectedCase.meta;
-          } else {
-            formState.meta = null;
+          if (selectedCase) {
+            formState.calculation_case_id = selectedCase.id;
+            if (selectedCase.meta) {
+              formState.meta = selectedCase.meta;
+            } else {
+              formState.meta = null;
+            }
           }
         } catch (error) {
           console.error('Ошибка при получении метаданных:', error);
           formState.meta = null;
+          formState.calculation_case_id = null;
         }
       } else {
         formState.meta = null;
+        formState.calculation_case_id = null;
       }
     });
 
