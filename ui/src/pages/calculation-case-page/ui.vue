@@ -12,7 +12,7 @@
                 </a-descriptions-item>
             </a-descriptions>
             <br />
-            {{ route.params.id }}
+
             <a-spin :spinning="loading">Test</a-spin>
             <meta-editor :id="route.params.id" :initial-meta="metaData" @save="handleMetaSave" />
         </a-spin>
@@ -22,6 +22,7 @@
 <script>
 import { defineComponent, computed, ref, watch } from "vue";
 import { useRoute } from 'vue-router';
+import { message } from 'ant-design-vue';
 import { CalculationCaseModel } from "~/src/entities/calculation-case";
 import MetaEditor from '~/src/widgets/meta-editor/ui.vue';
 
@@ -40,11 +41,15 @@ export default defineComponent({
         watch(() => data.value?.meta, (newMeta) => {
             if (newMeta) {
                 try {
-                    metaData.value = JSON.parse(newMeta);
+                    const parsedMeta = JSON.parse(newMeta);
+                    metaData.value = Array.isArray(parsedMeta) ? parsedMeta : [];
+                    console.log('Загруженные метаданные:', metaData.value);
                 } catch (e) {
                     console.error('Ошибка при разборе мета-данных:', e);
                     metaData.value = [];
                 }
+            } else {
+                metaData.value = [];
             }
         }, { immediate: true });
 
@@ -55,8 +60,10 @@ export default defineComponent({
                 }
                 const metaString = JSON.stringify(metadata);
                 await update(route.params.id.toString(), { meta: metaString });
+                message.success('Метаданные успешно обновлены');
             } catch (e) {
                 console.error('Ошибка при сохранении мета-данных:', e);
+                message.error('Произошла ошибка при сохранении метаданных');
             }
         };
 

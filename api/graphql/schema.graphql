@@ -44,7 +44,7 @@ type Query {
     file(id: ID! @eq): File @find @guard
 
     calculationCases: [CalculationCase!]! @all
-    calculationCase(id: ID! @eq): CalculationCase @find @guard
+    calculationCase(id: ID! @eq): CalculationCase @find
 }
 
 type Mutation {

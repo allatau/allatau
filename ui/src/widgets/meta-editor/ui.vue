@@ -1,4 +1,5 @@
 <template>
+    META: {{ props.initialMeta }}
     <a-form ref="formRef" name="meta_editor_form" :model="dynamicValidateForm" v-bind="formItemLayoutWithOutLabel">
         <div v-for="(field, index) in dynamicValidateForm.fields" :key="field.key">
             <a-form-item v-bind="index === 0 ? formItemLayout : {}" :label="index === 0 ? 'Метаданные' : ''">
@@ -40,7 +41,7 @@
 import { reactive, ref, onMounted } from 'vue';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import type { FormInstance } from 'ant-design-vue';
-import { log } from 'console';
+import { message } from 'ant-design-vue';
 
 interface Field {
     filepath: string;
@@ -53,8 +54,8 @@ interface Field {
 
 const props = defineProps({
     initialMeta: {
-        type: Object,
-        default: () => ({})
+        type: Array as () => Field[],
+        default: () => []
     },
     id: {
         type: String,
@@ -87,7 +88,6 @@ const dynamicValidateForm = reactive<{ fields: Field[] }>({
 });
 
 const submitForm = () => {
-    console.log('submitForm', dynamicValidateForm.fields);
     formRef.value
         ?.validate()
         .then(() => {
@@ -99,9 +99,11 @@ const submitForm = () => {
                 description: field.description
             }));
             emit('save', { metadata: result });
+            message.success('Метаданные успешно сохранены');
         })
         .catch(error => {
             console.log('error', error);
+            message.error('Ошибка при сохранении метаданных');
         });
 };
 
@@ -128,13 +130,15 @@ const addField = () => {
 };
 
 onMounted(() => {
-    if (Array.isArray(props.initialMeta) && props.initialMeta.length) {
-        props.initialMeta.forEach((meta) => {
-            dynamicValidateForm.fields.push({
-                ...meta,
-                key: Date.now(),
-            });
-        });
+    if (props.initialMeta && props.initialMeta.length > 0) {
+        dynamicValidateForm.fields = props.initialMeta.map((meta) => ({
+            filepath: meta.filepath || '',
+            pos: meta.pos || 0,
+            length: meta.length || 0,
+            name: meta.name || '',
+            description: meta.description || '',
+            key: Date.now() + Math.random(),
+        }));
     } else {
         addField();
     }
@@ -158,5 +162,10 @@ onMounted(() => {
 .dynamic-delete-button[disabled] {
     cursor: not-allowed;
     opacity: 0.5;
+}
+
+.field-label {
+    font-weight: 500;
+    margin-bottom: 4px;
 }
 </style>

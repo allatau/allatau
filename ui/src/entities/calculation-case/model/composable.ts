@@ -116,6 +116,7 @@ export function useComposable() {
     );
 
     const data = useResult(result, null, (response) => {
+      console.log("Ответ от сервера:", response);
       return response.calculationCase;
     });
 
