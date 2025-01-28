@@ -8,7 +8,7 @@ import { convStringToGql } from "~/src/shared/lib";
 
 const queryList = gqlBuilder.query({
   operation: "calculationCases",
-  fields: ["id", "name", { file: ["id", "name"] }],
+  fields: ["id", "name", "meta", { file: ["id", "name"] }],
 });
 
 const queryItemById = gqlBuilder.query({
@@ -19,7 +19,7 @@ const queryItemById = gqlBuilder.query({
       required: true,
     },
   },
-  fields: ["id", "name", { file: ["id", "name"] }],
+  fields: ["id", "name", "meta", { file: ["id", "name"] }],
 });
 
 const createMutation = gqlBuilder.mutation({

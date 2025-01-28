@@ -58,6 +58,9 @@
 
     </a-form-item>
 
+    <a-form-item v-if="isReadyCase === true && formState.meta" label="Параметры расчетного кейса">
+      <dynamic-form :meta-fields="parsedMeta" @submit="handleMetaSubmit" />
+    </a-form-item>
 
     <!-- <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
       <a-button type="primary" html-type="submit">Submit</a-button>
@@ -74,11 +77,13 @@ import { MicroserviceModel } from "~/src/entities/microservice";
 import { CalculationCaseModel } from "~/src/entities/calculation-case";
 
 import IframeManagement from "./IframeManagement.vue";
+import DynamicForm from '~/src/widgets/dynamic-form/ui.vue';
 
 import axios from "axios";
 export default defineComponent({
   components: {
-    IframeManagement
+    IframeManagement,
+    DynamicForm
   },
   props: {
     projectId: {
@@ -117,10 +122,24 @@ export default defineComponent({
       numericalModel: null,
       converterService: null,
       projectId: props.projectId,
+      meta: null,
       script:
         "#!/bin/bash\nsource /opt/openfoam9/etc/bashrc\nblockMesh\nicoFoam",
     });
     // https://standalone-widget-cavity.vercel.app
+
+    const parsedMeta = computed(() => {
+      try {
+        return formState.meta ? JSON.parse(formState.meta) : [];
+      } catch (e) {
+        console.error('Ошибка при разборе метаданных:', e);
+        return [];
+      }
+    });
+
+    const handleMetaSubmit = (metaValues) => {
+      formState.metaValues = metaValues;
+    };
 
     const onFinish = (values) => {
 
@@ -141,7 +160,8 @@ export default defineComponent({
       const data = {
         ...values,
         filePath: formState.filePath,
-        converterService
+        converterService,
+        metaValues: formState.metaValues
       };
       console.log("Success:", data);
       emit("submit", data);
@@ -149,18 +169,41 @@ export default defineComponent({
 
     watch(isReadyCase, (newValue, oldValue) => {
       if (newValue === true) {
-        formState.converterService = null
+        formState.converterService = null;
       } else {
-        formState.file_id = ""
-        formState.filePath = ""
+        formState.file_id = "";
+        formState.filePath = "";
+        formState.meta = null;
       }
-    })
+    });
 
     watch(formState, (newValue, oldValue) => {
       if (formState.file_id !== "") {
-        formState.filePath = `${config.public.API_URL}/public/files/${formState.file_id}`
+        formState.filePath = `${config.public.API_URL}/public/files/${formState.file_id}`;
+      } else {
+        formState.filePath = "";
+        formState.meta = null;
       }
-    })
+    });
+
+    watch(() => formState.file_id, async (newFileId) => {
+      if (newFileId) {
+        try {
+          const selectedCase = calculationcases.value.find(c => c.file.id === newFileId);
+
+          if (selectedCase?.meta) {
+            formState.meta = selectedCase.meta;
+          } else {
+            formState.meta = null;
+          }
+        } catch (error) {
+          console.error('Ошибка при получении метаданных:', error);
+          formState.meta = null;
+        }
+      } else {
+        formState.meta = null;
+      }
+    });
 
     const submitForm = () => {
       // formRef.value.validate();
@@ -241,7 +284,8 @@ export default defineComponent({
       isReadyCase,
       handleIframeChange,
       calculationcases,
-
+      parsedMeta,
+      handleMetaSubmit
     };
   },
 });
