@@ -3,10 +3,11 @@
 
         <a-flex wrap="wrap" gap="small">
             <CalculationCaseAdding />
-            <nuxt-link :to="`calculation-cases/generate-via-services`">
+            <!-- <nuxt-link :to="`calculation-cases/generate-via-services`">
                 <a-button type="primary">Сгенерировать с помощью внешних сервисов</a-button>
-            </nuxt-link>
+            </nuxt-link> -->
         </a-flex>
+        <br />
         <CalculationCasesList />
     </div>
 </template>

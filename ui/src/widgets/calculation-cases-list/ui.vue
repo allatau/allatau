@@ -6,6 +6,12 @@
                 <a :href="`${config.public.API_URL}/public/files/${record.file_id}`"><a-button>Download</a-button></a>
             </template>
 
+            <template v-if="column.key === 'name'">
+                <nuxt-link :to="`/calculation-cases/${record.id}`">
+                    {{ text }}
+                </nuxt-link>
+            </template>
+
             <template v-if="column.key === 'action'">
                 <div style="display: flex; gap: 8px">
                     <a-button @click="() => deleteItemFunc(text.id)" type="primary" shape="circle" danger>

@@ -8,13 +8,8 @@ import { convStringToGql } from "~/src/shared/lib";
 
 const queryList = gqlBuilder.query({
   operation: "calculationCases",
-  fields: [
-    "id",
-    "name",
-    { file: ["id", "name"] },
-  ],
+  fields: ["id", "name", { file: ["id", "name"] }],
 });
-
 
 const queryItemById = gqlBuilder.query({
   operation: "calculationCase",
@@ -24,11 +19,7 @@ const queryItemById = gqlBuilder.query({
       required: true,
     },
   },
-  fields: [
-    "id",
-    "name",
-    { file: ["id", "name"] },
-  ],
+  fields: ["id", "name", { file: ["id", "name"] }],
 });
 
 const createMutation = gqlBuilder.mutation({
@@ -57,13 +48,24 @@ const deleteMutation = gqlBuilder.mutation({
   fields: ["id"],
 });
 
+const queryOneItem = gqlBuilder.query({
+  operation: "calculationCase",
+  variables: {
+    id: {
+      type: "ID",
+      required: true,
+    },
+  },
+  fields: ["id", "name", { file: ["id", "name"] }],
+});
+
 /* GraphQL with VueApollo */
 export function useComposable() {
   const { mutate: createItem } = useMutation(
     convStringToGql(createMutation.query)
   );
 
-  const { mutate: deleteItem} = useMutation(
+  const { mutate: deleteItem } = useMutation(
     convStringToGql(deleteMutation.query)
   );
 
@@ -85,6 +87,25 @@ export function useComposable() {
     );
   };
 
+  const fetchOne = (id: string) => {
+    const { result, loading } = useQuery(
+      convStringToGql(queryOneItem.query),
+      { id },
+      {
+        pollInterval: 2000,
+      }
+    );
+
+    const data = useResult(result, null, (response) => {
+      return response.calculationCase;
+    });
+
+    return {
+      result: data,
+      loading,
+    };
+  };
+
   const { result, loading, error } = useQuery(
     convStringToGql(queryList.query),
     null,
@@ -95,7 +116,7 @@ export function useComposable() {
 
   const items = useResult(result, [], (response) => {
     console.log("response", response);
-    return response.calculationCases
+    return response.calculationCases;
   });
 
   return {
@@ -107,5 +128,6 @@ export function useComposable() {
     // mutations
     createItem,
     deleteItem,
+    fetchOne,
   };
 }
