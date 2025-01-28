@@ -9,7 +9,8 @@
                 <div style="display: flex; gap: 8px; margin-bottom: 8px">
                     <div style="width: 50%">
                         <div class="field-label">Позиция</div>
-                        <a-input-number v-model:value="field.pos" placeholder="Позиция" style="width: 100%" />
+                        <a-input v-model:value="field.pos" placeholder="Позиция (например, 32:12)"
+                            style="width: 100%" />
                     </div>
                     <div style="width: 50%">
                         <div class="field-label">Длина</div>
@@ -45,7 +46,7 @@ import { message } from 'ant-design-vue';
 
 interface Field {
     filepath: string;
-    pos: number;
+    pos: string;
     length: number;
     name: string;
     description: string;
@@ -121,7 +122,7 @@ const removeField = (item: Field) => {
 const addField = () => {
     dynamicValidateForm.fields.push({
         filepath: '',
-        pos: 0,
+        pos: '',
         length: 0,
         name: '',
         description: '',
@@ -132,7 +133,7 @@ const addField = () => {
 const updateFormFields = (meta: Field[]) => {
     dynamicValidateForm.fields = meta.map((meta) => ({
         filepath: meta.filepath || '',
-        pos: meta.pos || 0,
+        pos: meta.pos || '',
         length: meta.length || 0,
         name: meta.name || '',
         description: meta.description || '',
