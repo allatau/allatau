@@ -40,6 +40,7 @@
 import { reactive, ref, onMounted } from 'vue';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import type { FormInstance } from 'ant-design-vue';
+import { log } from 'console';
 
 interface Field {
     filepath: string;
@@ -54,6 +55,10 @@ const props = defineProps({
     initialMeta: {
         type: Object,
         default: () => ({})
+    },
+    id: {
+        type: String,
+        required: true
     }
 });
 
@@ -82,6 +87,7 @@ const dynamicValidateForm = reactive<{ fields: Field[] }>({
 });
 
 const submitForm = () => {
+    console.log('submitForm', dynamicValidateForm.fields);
     formRef.value
         ?.validate()
         .then(() => {
@@ -92,7 +98,7 @@ const submitForm = () => {
                 name: field.name,
                 description: field.description
             }));
-            emit('save', result);
+            emit('save', { metadata: result });
         })
         .catch(error => {
             console.log('error', error);

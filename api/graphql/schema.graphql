@@ -2,13 +2,16 @@
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
-scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+scalar DateTime
+    @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 "A datetime and timezone string in ISO 8601 format `Y-m-dTH:i:sO`, e.g. `2020-04-20T13:53:12+02:00`."
-scalar DateTimeTz @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTimeTz")
+scalar DateTimeTz
+    @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTimeTz")
 
 "Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec"
-scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
+scalar Upload
+    @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
 
 type Query {
     users: [User!]! @paginate(defaultCount: 10)
@@ -53,13 +56,27 @@ type Mutation {
     login(email: String!, password: String!): UserTokenDetails
     logout: User @guard
 
-    createComputingResource(name: String!, port: String!, host: String!, login: String!, password: String!): ComputingResource
+    createComputingResource(
+        name: String!
+        port: String!
+        host: String!
+        login: String!
+        password: String!
+    ): ComputingResource
     deleteComputingResource(id: ID!): ComputingResource
 
     createProject(title: String!, description: String): Project
     deleteProject(id: ID!): Project
 
-    createTask(name: String!, computing_resource_id: ID!, project_id: ID!, script: String, computational_model_resource: String, numerical_model: String, converter_service: String): Task
+    createTask(
+        name: String!
+        computing_resource_id: ID!
+        project_id: ID!
+        script: String
+        computational_model_resource: String
+        numerical_model: String
+        converter_service: String
+    ): Task
     startTask(id: ID!): Task
     dublicateTask(id: ID!): Task
     deleteTask(id: ID!): Task
@@ -74,8 +91,9 @@ type Mutation {
     deleteWebWidget(id: ID! @eq): WebWidget @delete
 
     createCalculationCase(name: String!, file_id: ID!): CalculationCase @create
+    updateCalculationCase(id: ID!, name: String, meta: String): CalculationCase
+        @update
     deleteCalculationCase(id: ID! @eq): CalculationCase @delete
-
 
     # https://lighthouse-php.com/6/digging-deeper/file-uploads.html#handling-file-uploads
     # uploadFile()
@@ -162,6 +180,7 @@ type CalculationCase {
     id: ID!
     name: String!
     file: File
+    meta: String
 }
 
 type Post {
@@ -177,7 +196,6 @@ type Comment {
     reply: String!
     post: Post! @belongsTo
 }
-
 
 enum TaskStatus {
     # Задача создана, но не отправлена на выполнение

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name');
             $table->uuid('file_id');
+            $table->json('meta')->nullable();
         });
     }
 

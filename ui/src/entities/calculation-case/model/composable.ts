@@ -56,7 +56,22 @@ const queryOneItem = gqlBuilder.query({
       required: true,
     },
   },
-  fields: ["id", "name", { file: ["id", "name"] }],
+  fields: ["id", "name", "meta", { file: ["id", "name"] }],
+});
+
+const updateMutation = gqlBuilder.mutation({
+  operation: "updateCalculationCase",
+  variables: {
+    id: {
+      type: "ID",
+      required: true,
+    },
+    meta: {
+      type: "String",
+      required: false,
+    },
+  },
+  fields: ["id", "name", "meta"],
 });
 
 /* GraphQL with VueApollo */
@@ -67,6 +82,10 @@ export function useComposable() {
 
   const { mutate: deleteItem } = useMutation(
     convStringToGql(deleteMutation.query)
+  );
+
+  const { mutate: updateItem } = useMutation(
+    convStringToGql(updateMutation.query)
   );
 
   const fetch = (pollInterval: 10000) => {
@@ -119,6 +138,13 @@ export function useComposable() {
     return response.calculationCases;
   });
 
+  const update = async (id: string, data: { meta?: string }) => {
+    return await updateItem({
+      id,
+      ...data,
+    });
+  };
+
   return {
     // query
     fetch,
@@ -129,5 +155,6 @@ export function useComposable() {
     createItem,
     deleteItem,
     fetchOne,
+    update,
   };
 }
