@@ -13,8 +13,9 @@
             </a-descriptions>
             <br />
 
-            <a-spin :spinning="loading">Test</a-spin>
-            <meta-editor :id="route.params.id" :initial-meta="metaData" @save="handleMetaSave" />
+            <a-spin :spinning="loading">
+                <meta-editor :id="route.params.id" :initial-meta="metaData" @save="handleMetaSave" />
+            </a-spin>
         </a-spin>
     </div>
 </template>

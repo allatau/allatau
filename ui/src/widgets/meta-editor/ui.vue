@@ -1,5 +1,4 @@
 <template>
-    META: {{ props.initialMeta }}
     <a-form ref="formRef" name="meta_editor_form" :model="dynamicValidateForm" v-bind="formItemLayoutWithOutLabel">
         <div v-for="(field, index) in dynamicValidateForm.fields" :key="field.key">
             <a-form-item v-bind="index === 0 ? formItemLayout : {}" :label="index === 0 ? 'Метаданные' : ''">
