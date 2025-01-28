@@ -69,7 +69,7 @@ const submitForm = () => {
     formRef.value
         ?.validate()
         .then(() => {
-            const result = {};
+            const result: { [key: string]: string } = {};
             dynamicValidateForm.fields.forEach((field, index) => {
                 result[`field${index + 1}`] = field.value;
             });
