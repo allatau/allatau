@@ -1,7 +1,7 @@
 <template>
     <div class="page-wrapper">
         <a-spin :spinning="loading">
-            <a-descriptions v-if="data" title="Информация о расчетном случае" bordered>
+            <a-descriptions v-if="data" title="Информация о расчетном кейсе" bordered>
                 <a-descriptions-item label="Название">
                     {{ data.name }}
                 </a-descriptions-item>
@@ -13,6 +13,7 @@
             </a-descriptions>
             <br />
 
+            <h2>Мета-данные</h2>
             <a-spin :spinning="loading">
                 <meta-editor :id="route.params.id" :initial-meta="metaData" @save="handleMetaSave" />
             </a-spin>

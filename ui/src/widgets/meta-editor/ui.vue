@@ -1,7 +1,7 @@
 <template>
     <a-form ref="formRef" name="meta_editor_form" :model="dynamicValidateForm" v-bind="formItemLayoutWithOutLabel">
         <div v-for="(field, index) in dynamicValidateForm.fields" :key="field.key">
-            <a-form-item v-bind="index === 0 ? formItemLayout : {}" :label="index === 0 ? 'Метаданные' : ''">
+            <a-form-item v-bind="index === 0 ? formItemLayout : {}">
                 <div class="field-label">Путь к файлу</div>
                 <a-input v-model:value="field.filepath" placeholder="Путь к файлу"
                     style="width: 100%; margin-bottom: 8px" />
