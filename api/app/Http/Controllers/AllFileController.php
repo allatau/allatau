@@ -15,7 +15,9 @@ class AllFileController extends Controller
 {
     function getFile($guid){
         $file = File::find($guid);
-        return Storage::download($file->path);
+        // Преобразуем абсолютный путь в относительный для Storage
+        $relativePath = str_replace(storage_path('app/'), '', $file->path);
+        return Storage::download($relativePath);
     }
 
 
