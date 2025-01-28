@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted } from 'vue';
+import { reactive, ref, onMounted, watch } from 'vue';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import type { FormInstance } from 'ant-design-vue';
 import { message } from 'ant-design-vue';
@@ -129,16 +129,29 @@ const addField = () => {
     });
 };
 
+const updateFormFields = (meta: Field[]) => {
+    dynamicValidateForm.fields = meta.map((meta) => ({
+        filepath: meta.filepath || '',
+        pos: meta.pos || 0,
+        length: meta.length || 0,
+        name: meta.name || '',
+        description: meta.description || '',
+        key: Date.now() + Math.random(),
+    }));
+};
+
+watch(() => props.initialMeta, (newMeta) => {
+    if (newMeta && newMeta.length > 0) {
+        updateFormFields(newMeta);
+    } else {
+        dynamicValidateForm.fields = [];
+        addField();
+    }
+}, { immediate: true, deep: true });
+
 onMounted(() => {
     if (props.initialMeta && props.initialMeta.length > 0) {
-        dynamicValidateForm.fields = props.initialMeta.map((meta) => ({
-            filepath: meta.filepath || '',
-            pos: meta.pos || 0,
-            length: meta.length || 0,
-            name: meta.name || '',
-            description: meta.description || '',
-            key: Date.now() + Math.random(),
-        }));
+        updateFormFields(props.initialMeta);
     } else {
         addField();
     }
