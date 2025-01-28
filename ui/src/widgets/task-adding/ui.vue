@@ -68,7 +68,9 @@ export default defineComponent({
                 computational_model_resource: values.filePath,
                 converter_service: JSON.stringify(values.converterService),
                 numerical_model: values.numericalModel,
-                project_id: values.projectId
+                project_id: values.projectId,
+                calculation_case_id: values.file_id || null,
+                meta_values: JSON.stringify(values.metaValues || {})
             }
             console.log("p", p);
             createTask(p);

@@ -139,9 +139,7 @@ export default defineComponent({
     });
 
     const onFinish = (values) => {
-
-      let converterService = null
-
+      let converterService = null;
       try {
         if (values.converterService !== null) {
           converterService = {
@@ -149,7 +147,6 @@ export default defineComponent({
             type: "microservice"
           }
         }
-
       } catch (error) {
         console.error(error);
       }

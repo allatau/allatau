@@ -23,7 +23,7 @@ class CreateTasksTable extends Migration
             $table->string('files');
             $table->longText('script');
             $table->longText('jobs');
-            $table->longText('computational_model_resource');
+            $table->longText('computational_model_resource')->nullable();
             $table->longText('type');
             $table->longText('extra');
             $table->longText('numerical_model');

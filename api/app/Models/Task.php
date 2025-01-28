@@ -24,7 +24,9 @@ class Task extends Model
         'extra',
         'numerical_model',
         'converter_service',
-        'jobs'
+        'jobs',
+        'calculation_case_id',
+        'meta_values'
     ];
 
     /**
@@ -51,6 +53,8 @@ class Task extends Model
         return $this->belongsTo(Project::class);
     }
 
-
-
+    public function calculation_case(): BelongsTo
+    {
+        return $this->belongsTo(CalculationCase::class, 'calculation_case_id');
+    }
 }
