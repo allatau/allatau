@@ -152,13 +152,19 @@ export default defineComponent({
         console.error(error);
       }
 
+      console.log('formState before creating data:', formState);
+
       const data = {
-        ...values,
-        filePath: formState.filePath,
-        converterService,
-        metaValues: formState.metaValues
+        name: values.name,
+        computing_resource_id: String(values.computingClusterId),
+        project_id: String(formState.projectId),
+        script: values.script,
+        converter_service: JSON.stringify(converterService),
+        meta_values: JSON.stringify(formState.metaValues),
+        calculation_case_id: formState.calculation_case_id
       };
-      console.log("Success:", data);
+
+      console.log("Final data to be submitted:", data);
       emit("submit", data);
     };
 
@@ -185,9 +191,11 @@ export default defineComponent({
       if (newFileId) {
         try {
           const selectedCase = calculationcases.value.find(c => c.file.id === newFileId);
+          console.log('Selected case:', selectedCase);
 
           if (selectedCase) {
             formState.calculation_case_id = selectedCase.id;
+            console.log('Set calculation_case_id to:', formState.calculation_case_id);
             if (selectedCase.meta) {
               formState.meta = selectedCase.meta;
             } else {

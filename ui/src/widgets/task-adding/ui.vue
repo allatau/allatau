@@ -63,14 +63,14 @@ export default defineComponent({
             console.log("values", values);
             const p = {
                 name: values.name,
-                computing_resource_id: values.computingClusterId,
+                computing_resource_id: values.computing_resource_id,
                 script: values.script,
                 computational_model_resource: values.filePath,
-                converter_service: JSON.stringify(values.converterService),
+                converter_service: values.converter_service,
                 numerical_model: values.numericalModel,
-                project_id: values.projectId,
-                calculation_case_id: values.file_id || null,
-                meta_values: JSON.stringify(values.metaValues || {})
+                project_id: values.project_id,
+                calculation_case_id: values.calculation_case_id,
+                meta_values: values.meta_values
             }
             console.log("p", p);
             createTask(p);
