@@ -52,17 +52,19 @@ class CreateTask
                 $file->path = $newCaseInfo['filepath'];
                 $file->save();
 
-                // Создаем новый CalculationCase на основе сгенерированного файла
+                // Создаем временный CalculationCase для генерации файла
                 $newCalculationCase = new CalculationCase();
                 $newCalculationCase->name = $task->name . " (generated)";
                 $newCalculationCase->file_id = $file->id;
                 $newCalculationCase->meta = $calculationCase->meta;
                 $newCalculationCase->save();
 
-                // Обновляем задачу, связывая её с новым расчетным кейсом
+                // Обновляем задачу
                 $host = rtrim(request()->getSchemeAndHttpHost(), '/');
                 $task->computational_model_resource = "{$host}/public/files/{$file->id}";
-                $task->calculation_case_id = $newCalculationCase->id;
+                
+                // Удаляем временный CalculationCase, оставляя только файл
+                $newCalculationCase->delete();
             }
         }
 
