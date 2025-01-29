@@ -61,7 +61,6 @@
     <a-form-item v-if="isReadyCase === true && formState.meta" label="Параметры расчетного кейса">
       <dynamic-form :meta-fields="parsedMeta" v-model="formState.metaValues" />
     </a-form-item>
-    {{ formState }}
     <!-- <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
       <a-button type="primary" html-type="submit">Submit</a-button>
     </a-form-item> -->
