@@ -38,11 +38,16 @@ class CreateTask
             if ($calculationCase && $calculationCase->file) {
                 $task->calculation_case_id = $args['calculation_case_id'];
                 
+                $metaFields = json_decode($calculationCase->meta, true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new \Exception('Invalid meta fields format in calculation case');
+                }
+                
                 // Генерируем новый расчетный кейс и получаем информацию о нем
                 $newCaseInfo = $this->generateNewCase(
                     $calculationCase->file->path,
                     json_decode($args['meta_values'], true),
-                    json_decode($calculationCase->meta, true),
+                    $metaFields,
                     $task->name
                 );
                 
@@ -93,34 +98,36 @@ class CreateTask
             $output = shell_exec($command);
 
             // Применяем изменения на основе метаданных
-            foreach ($metaFields as $field) {
-                if (isset($metaValues[$field['filepath']])) {
-                    $filePath = $tempDir . '/' . $field['filepath'];
-                    if (file_exists($filePath)) {
-                        $content = file_get_contents($filePath);
-                        
-                        if (isset($field['pos'])) {
-                            // Разбираем позицию в формате "строка:колонка"
-                            list($line, $column) = array_map('intval', explode(':', $field['pos']));
+            if (is_array($metaFields)) {
+                foreach ($metaFields as $field) {
+                    if (isset($metaValues[$field['filepath']])) {
+                        $filePath = $tempDir . '/' . $field['filepath'];
+                        if (file_exists($filePath)) {
+                            $content = file_get_contents($filePath);
                             
-                            // Читаем файл построчно
-                            $lines = explode("\n", $content);
-                            
-                            if (isset($lines[$line - 1])) {
-                                $currentLine = $lines[$line - 1];
-                                $newValue = $metaValues[$field['filepath']];
+                            if (isset($field['pos'])) {
+                                // Разбираем позицию в формате "строка:колонка"
+                                list($line, $column) = array_map('intval', explode(':', $field['pos']));
                                 
-                                // Заменяем значение в указанной позиции
-                                $lines[$line - 1] = substr_replace(
-                                    $currentLine,
-                                    $newValue,
-                                    $column - 1,
-                                    $field['length']
-                                );
+                                // Читаем файл построчно
+                                $lines = explode("\n", $content);
                                 
-                                // Собираем файл обратно
-                                $content = implode("\n", $lines);
-                                file_put_contents($filePath, $content);
+                                if (isset($lines[$line - 1])) {
+                                    $currentLine = $lines[$line - 1];
+                                    $newValue = $metaValues[$field['filepath']];
+                                    
+                                    // Заменяем значение в указанной позиции
+                                    $lines[$line - 1] = substr_replace(
+                                        $currentLine,
+                                        $newValue,
+                                        $column - 1,
+                                        $field['length']
+                                    );
+                                    
+                                    // Собираем файл обратно
+                                    $content = implode("\n", $lines);
+                                    file_put_contents($filePath, $content);
+                                }
                             }
                         }
                     }
