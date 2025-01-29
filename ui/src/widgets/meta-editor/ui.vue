@@ -7,13 +7,13 @@
                     style="width: 100%; margin-bottom: 8px" />
                 <div style="display: flex; gap: 8px; margin-bottom: 8px">
                     <div style="width: 50%">
-                        <div class="field-label">Позиция</div>
-                        <a-input v-model:value="field.pos" placeholder="Позиция (например, 32:12)"
-                            style="width: 100%" />
+                        <div class="field-label">Позиция (строка:колонка)</div>
+                        <a-input v-model:value="field.pos" placeholder="Например: 26:34" style="width: 100%" />
                     </div>
                     <div style="width: 50%">
-                        <div class="field-label">Длина</div>
-                        <a-input-number v-model:value="field.length" placeholder="Длина" style="width: 100%" />
+                        <div class="field-label">Длина значения</div>
+                        <a-input-number v-model:value="field.length" placeholder="Длина заменяемого значения"
+                            style="width: 100%" />
                     </div>
                 </div>
                 <div class="field-label">Название</div>

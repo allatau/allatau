@@ -97,13 +97,30 @@ class CreateTask
                     if (file_exists($filePath)) {
                         $content = file_get_contents($filePath);
                         
-                        if (isset($field['position'])) {
-                            $position = $field['position'];
-                            $newValue = $metaValues[$field['filepath']];
-                            $content = substr_replace($content, $newValue, $position, strlen($newValue));
+                        if (isset($field['pos'])) {
+                            // Разбираем позицию в формате "строка:колонка"
+                            list($line, $column) = array_map('intval', explode(':', $field['pos']));
+                            
+                            // Читаем файл построчно
+                            $lines = explode("\n", $content);
+                            
+                            if (isset($lines[$line - 1])) {
+                                $currentLine = $lines[$line - 1];
+                                $newValue = $metaValues[$field['filepath']];
+                                
+                                // Заменяем значение в указанной позиции
+                                $lines[$line - 1] = substr_replace(
+                                    $currentLine,
+                                    $newValue,
+                                    $column - 1,
+                                    $field['length']
+                                );
+                                
+                                // Собираем файл обратно
+                                $content = implode("\n", $lines);
+                                file_put_contents($filePath, $content);
+                            }
                         }
-                        
-                        file_put_contents($filePath, $content);
                     }
                 }
             }
