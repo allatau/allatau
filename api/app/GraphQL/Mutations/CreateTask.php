@@ -60,8 +60,8 @@ class CreateTask
                 $newCalculationCase->save();
 
                 // Обновляем задачу, связывая её с новым расчетным кейсом
-                $config = config('app.url');
-                $task->computational_model_resource = "{$config}/public/files/{$file->id}"; // Формируем URL для доступа к файлу
+                $host = rtrim(request()->getSchemeAndHttpHost(), '/');
+                $task->computational_model_resource = "{$host}/public/files/{$file->id}";
                 $task->calculation_case_id = $newCalculationCase->id;
             }
         }
